@@ -24,13 +24,7 @@ class Room:
             return False
     
     def addRoom(self, room):
-        if (self.isEmpty()==True):
-            temp = random.randint(0,1)
-            if temp==0:
-                self.left = room
-            else:
-                self.right = room
-        elif self.left == None:
+        if self.left == None:
             self.left= room
         elif self.right == None:
             self.right = room
@@ -39,6 +33,7 @@ class Room:
 class Cave:
     def __init__(self):
         self.root = Room(0)
+        self.size = 1
     
 
     def height(self):
@@ -60,11 +55,34 @@ class Cave:
             if current.isFull():
                 queue.append(current.left)
                 queue.append(current.right)
-                
             else:
                 current.addRoom(Room(current.level+1,index))
                 print(current.level+1, end=" ")
+                self.size +=1
                 break
+
+    def addTreasure(self):
+        queue = []
+        queue.append(self.root)
+        current = None
+        index = random.randint(15,self.size-1)
+        count = 0
+        while len(queue) != 0:
+            current = queue.pop(0)
+            
+            if current.left != None:
+                queue.append(current.left)
+
+            if current.right != None:
+                queue.append(current.right)
+            
+            if count==index:
+                current.treasure= True
+                print()
+                print(current.index,"->", current.level)
+                break
+            count +=1
+            
 
     def printRoom(self):
         queue = []
@@ -87,15 +105,9 @@ class Cave:
 
 cave = Cave()
 print("level: ",0,end=' ')
-cave.addRoomCave(1)
-cave.addRoomCave(2)
-cave.addRoomCave(3)
-cave.addRoomCave(4)
-cave.addRoomCave(5)
-cave.addRoomCave(6)
-cave.addRoomCave(7)
-cave.addRoomCave(8)
-cave.addRoomCave(9)
+for i in range(38):
+    cave.addRoomCave(i+1)
 print()
 print("index: ",end=" ")
 cave.printRoom()
+cave.addTreasure()
