@@ -1,0 +1,159 @@
+1. Yang bukan istilah dalam Stack
+pilihan :
+IsFull  Pop  Push  Rear*
+
+2. Yang bukan istilah dalam Queue
+pilihan :
+Enqueue  Pop*  Dequeue  IsFull
+
+3. Kumpulan dari simpul dan busur disebut
+stack  quueue  graph*  linked list
+
+4. Jika sebuah undirected graph memiliki edge sebagai berikut:
+(A,B), (B,C), (C,A), (D,E), (B,D)
+apakah graph tersebut membentuk cycle graph?
+ya*  tidak
+
+5. Istilah dalam graph jika ada sebuah edge yang ditulis e = (v,w) dan w terletak pada e
+maka hal tersebut disebut
+incident*  degree  outdegree  adjacent
+
+6. Pada graph tak berarah, dua simput disebut adjacent ketika
+ada busur yang menghubungkan kedua simpul*
+ada simpul yang menghubungkan kedua simpul
+tidak ada busur yang menghubungkan kedua simpul
+ada busur dan simpul yang menghubungkan kedua simpul
+
+7. Beberapa algoritma yang dapat mencari shortest path sebuah graph, kecuali
+djikstra algorithm  warshall's algorithm  MST  max-sum*
+
+8. Penelusuran graph dengan mendahulukan arah kedalaman disebut dengan
+BFS  DFS*  Greedy  Dynamic Programming
+
+9. Dalam Single Linked List, ada tambahan data di dalam node yang berfungsi untuk menyambungkan
+suatu node dengan node lainnya agar tidak putus disebut
+number  line  pointer*  null
+
+10. Kelebihan linked list daripada array adalah
+ukuran dinamis*  mudah dimengerti  bisa mengakses index langsung  code sederhana
+
+11. Fungsi atau prosedur yang dapat digunakan dalam sebuah program disebut
+primitif*  abstrak  kompleks  variabel
+
+12. Berikut adalah contoh tipe data sederhana tunggal, kecuali
+integer  boolean  string*  char
+
+13. Ketika ada sebuah data set 3, 2, 1 dan dimasukkan ke dalam stack secara berurutan
+namun menghasilkan hasil ascending, berapakah jumlah dari stack melakukan fungsi push?
+6*  3  2  8
+
+14. Double linked list memiliki 2 pointer, yaitu
+front & rear  top & bottom  root & leaf  head & tail*
+
+15. Perintah yang tepat untuk menyatakan linked list yang berada pada kondisi kosong adalah
+Head-Tail-Null*  Branch-Null  Tail-Null  Root-Null
+
+16. Beikut ini adalah istilah umum dalam tree, kecuali
+Level  Leaf  Root  Weight*
+
+17. Node yang mempunyai level sama pada tree disebut
+Sibling*  Parent  Child  Line
+
+18. Tree yang pada tiap node nya memiliki 2 cabang saja disebut
+normal tree  not tree  graph tree  binary tree*
+
+19. Simpul yang tidak mempunyai subordinat atau simpul yang derajat masuknya = 1 dan keluarnya = 0 adalah
+Root  Leaf*  Child  Subtree
+
+20. Node yang berada di bawah node tertentu disebut juga dengan
+Prodecessor  Successor*  Ancestor  Descendant
+
+21. Suatu kelompok data yang dapat dikarakteristikan oleh organisasi serta operasi adalah
+Pengaturan data  Kolom data  Struktur data*  Tipe data
+
+22. Struktur data standar yang digunakan dibawah ini adalah, kecuali
+Tree  Queue  Graph  Stuck*
+
+23. Berapa macam Linked List
+1  2*  3  4
+
+24. Prinsip kerja dari queue adalah
+last in first out  first in last out  last in last out*  sama dengan stack
+
+25. Antrean yang dimanfaatkan berdasarkan kepentingan penggunanya, disebut dengan
+performance queue  priority queue*  input restricted queue  output restricted queue
+
+26. Apabila ada satu data yang keluar dari dalam queue, maka posisi yang berubah adalah indikator (pointer)
+TOP  BOTTOM  FRONT*  REAR
+
+27. Jika Suatu pohon binner memiliki simpul sebanyak 5, maka ruasnya jumlahnya
+4  5*  6  7
+
+28. Untuk menambahkan item pada posisi paling atas pada stack adalah
+PUSH*  POP  CLEAR  ISFULL
+
+29. Jika pada stack terdapat kondisi TOP of STACK = MAX_STACK - 1, maka stack berada dalam keadaan
+Empty  Half Empty  ALMOST FULL  FULL*
+
+30. Jika saat ini elemen dalam sebuah antrian QUEUE adalah B G F R T, dan diberikan operasi Dequeue(), Enqueue('P'), Enqueue('H'), Dequeue(), Dequeue(). Maka elemen antrian saat ini adalah
+(R T P)  (G F R T P H)  (T P H)  (R T P H)*
+
+31. Jika saat ini elemen dalam sebuah antrian QUEUE adalah A D C F I, dan diberikan operasi Enqueue('Z'), Dequeue(), Enqueue('A'), Dequeue(), Dequeue(), Dequeue(). Maka elemen antrian saat ini adalah
+()  (Z)  (C F I Z A)  (I Z A)*
+
+32. Jika saat ini elemen dalam sebuah antrian QUEUE adalah Z X W A, dan diberikan operasi Dequeue(), Dequeue(), Enqueue('A'), Dequeue(), Dequeue(), Dequeue(). Maka elemen antrian saat ini adalah
+()*  (A A)  (A)  (W A A)
+
+33. Jika saat ini elemen dalam sebuah antrian QUEUE adalah R S T N B, dan diberikan operasi Dequeue(), Dequeue(), Enqueue('G'), Dequeue(), Enqueue('J), Enqueue('L). Maka elemen antrian saat ini adalah
+(T B L)  (B J)  (N B G J L)*  (B G J L)
+
+34. Untuk menambahkan item pada posisi paling belakang dalam queue dilakukan
+Push  Pop  Enqueue*  Dequeue
+
+35. Banyaknya simpul dari Graph dinamakan
+Vertex  Size  Ruas  Order*
+
+36. Banyaknya ruas dari Graph dinamakan
+Vertex  Size*  Ruas  Order
+
+37.Alur jalan mencetak isi node yang dikunjungi lalu melakukan kunjungan ke subtree kiri dan selanjutnya ke subtree kanan disebut
+Inorder  Postorder  Preorder*  Lastorder
+
+38. Berat sebuah pohon biner adalah
+banyaknya daun*  banyaknya simpul  tinggi left substree-nya  tinggi right substree-nya
+
+39. Struktur data apakah yang digunakan dalam proses hashing untuk menyimpan informasi dalam waktu berkala
+Linked List  2D Array  1D Array  Hash table*
+
+40. Hash table T memiliki 25 slot dan menyimpan 2000 element, load factor α untuk T adalah
+80*  8000  1.25  0.0125
+
+41. Hashing function pada memiliki beberapa macam, salah satunya
+Folding by shifting*  Folding by number  Folding by sorting  Folding by block
+
+42. istilah dari hash table yang mencegah agar hanya dapat ditempati maksimum oleh n record disebut
+linked address  record  interrupt  blocking factor*
+
+43. Jika saat ini elemen dalam sebuah STACK adalah Y(top) H B C, dan diberikan operasi pop(), push('V'), pop(), pop(), push('O'), pop(). Maka elemen dalam stack saat ini adalah
+(O B C)  (C)  (H B C)  (B C)*
+
+44. Jika saat ini elemen dalam sebuah STACK adalah X(top) U E, dan diberikan operasi push('T'), push('V'), pop(), pop(), push('O'), pop(). Maka elemen dalam stack saat ini adalah
+(V X U E)  (U E)  (X U E)  (O X U E)*
+
+45. Susunan preorder sebuah tranversal tree adalah 30, 20, 10, 15, 25, 23, 39, 35, 42. Apakah susunan postorder tree yang sama?
+10, 20, 15, 23, 25, 35, 42, 39, 30  15, 10, 25, 23, 20, 42, 35, 39, 30  15, 10, 23, 25, 20, 35, 42, 39, 30*  15, 20, 10, 23, 25, 42, 35, 39, 30
+
+46. Berapakah maksimum node dalam binary search tree dengan height = 5?
+2^6-1*  2^5-1  2^5  2^6  6
+
+47. Apakah Breadth-First-Search menggunakan stack atau/dan queue?
+Queue saja*  Stack saja  Keduanya  Tidak keduanya
+
+48. Tree yang balance memiliki jumlah item yang sama pada tiap subtree
+Benar* Salah
+
+49. Metode transversal tree manakah yang digunakan untuk output isi dari binary tree secara ascending?
+Post-order  In-order*  Pre-order  Monastic Orders
+
+50. Sebuah tree terdiri dari ..... yang terhubung dengan garis
+Fruit  Leaf Node  Root Node  Node*
