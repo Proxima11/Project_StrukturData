@@ -8,6 +8,7 @@ class Room:
         self.level = level
         self.data = None
         self.index = index
+        self.locked = True
         self.left = None
         self.right = None
     
@@ -32,7 +33,8 @@ class Room:
 
 class Cave:
     def __init__(self):
-        self.root = Room(0)
+        self.root = Room(0,0)
+        self.root.locked = False
         self.size = 1
     
 
@@ -57,7 +59,6 @@ class Cave:
                 queue.append(current.right)
             else:
                 current.addRoom(Room(current.level+1,index))
-                print(current.level+1, end=" ")
                 self.size +=1
                 break
 
@@ -65,7 +66,7 @@ class Cave:
         queue = []
         queue.append(self.root)
         current = None
-        index = random.randint(15,self.size-1)
+        index = random.randint(0,self.size-1)
         count = 0
         while len(queue) != 0:
             current = queue.pop(0)
@@ -98,16 +99,5 @@ class Cave:
             # Enqueue right child
             if current.right is not None:
                 queue.append(current.right)
+        print()
     
-
-        
-
-
-cave = Cave()
-print("level: ",0,end=' ')
-for i in range(38):
-    cave.addRoomCave(i+1)
-print()
-print("index: ",end=" ")
-cave.printRoom()
-cave.addTreasure()

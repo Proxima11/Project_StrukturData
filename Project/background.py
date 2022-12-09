@@ -1,4 +1,6 @@
 import pygame
+from StrukturData import Cave
+import time
 
 pygame.init()
 
@@ -18,13 +20,22 @@ for i in range (1,6):
     bg_images.append(bg_image)
 bg_width = 1920    
 
+#Struktur data
+cave = Cave()
+for i in range(8):
+    cave.addRoomCave(i+1)
+currentroom = cave.root
+
 # variables
-locked = True
+locked = currentroom.locked
 right = True
 question = False
+loading = False
 door1 = False
 door2 = False
 door3 = False
+change = False
+startpause = 0
 
 # images
 locked_bg = pygame.image.load("locked.png").convert_alpha()
@@ -61,70 +72,104 @@ def draw_notification():
     if door3: screen.blit(notification, (550, 15))
 
 run = True
+
+
+#game play
 while run:
-
     clock.tick(FPS)
+    if change == False:
+        #gambar ruangan
+        draw_room()
 
-    # gambar ruangan
-    draw_room()
+        # gambar potato
+        draw_potato()
 
-    # gambar potato
-    draw_potato()
-    move = pygame.key.get_pressed()
-    if potato_y > 300:
-        if move[pygame.K_LEFT]:
-            if potato_x > 100: potato_x-=5
-            right = False
-        if move[pygame.K_RIGHT]:
-            if potato_x < 650: potato_x+=5
-            right = True
-        if move[pygame.K_UP]:
-            if locked:
-                if potato_y > 370: potato_y-=5
-            else:    
-                potato_y-=5
-        if move[pygame.K_DOWN]:
-            if potato_y < 450: potato_y+=5
-    elif potato_y > 160:
-        if move[pygame.K_LEFT]:
-            if potato_x > 170: potato_x-=5
-            right = False
-        if move[pygame.K_RIGHT]:
-            if potato_x < 680: potato_x+=5
-            right = True
-        if move[pygame.K_UP]:
-            if potato_x > 180 and potato_x < 630: potato_y-=5
-        if move[pygame.K_DOWN]:
-            if potato_x > 160 and potato_x < 670 : potato_y+=5
-    else:
-        if move[pygame.K_LEFT]:
-            if potato_x > 230: potato_x-=5
-            right = False
-        if move[pygame.K_RIGHT]:
-            if potato_x < 550: potato_x+=5
-            right = True
-        if move[pygame.K_DOWN]:
-            if potato_x > 220 and potato_x < 550: potato_y+=5
+        move = pygame.key.get_pressed()
+        if potato_y > 300:
+            if move[pygame.K_LEFT]:
+                if potato_x > 100: potato_x-=5
+                right = False
+            if move[pygame.K_RIGHT]:
+                if potato_x < 650: potato_x+=5
+                right = True
+            if move[pygame.K_UP]:
+                if locked:
+                    if potato_y > 370: potato_y-=5
+                else:    
+                    potato_y-=5
+            if move[pygame.K_DOWN]:
+                if potato_y < 450: potato_y+=5
+        elif potato_y > 160:
+            if move[pygame.K_LEFT]:
+                if potato_x > 170: potato_x-=5
+                right = False
+            if move[pygame.K_RIGHT]:
+                if potato_x < 680: potato_x+=5
+                right = True
+            if move[pygame.K_UP]:
+                if potato_x > 180 and potato_x < 630: potato_y-=5
+            if move[pygame.K_DOWN]:
+                if potato_x > 160 and potato_x < 670 : potato_y+=5
+        else:
+            if move[pygame.K_LEFT]:
+                if potato_x > 230: potato_x-=5
+                right = False
+            if move[pygame.K_RIGHT]:
+                if potato_x < 550: potato_x+=5
+                right = True
+            if move[pygame.K_DOWN]:
+                if potato_x > 220 and potato_x < 550: potato_y+=5
 
-    # notifikasi
-    draw_notification()
-    if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False: 
-        question = True
+        # notifikasi
+        draw_notification()
+        if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False: 
+            question = True
+            key = pygame.key.get_pressed()
+            if key[pygame.K_e]:
+                locked = False
+        else : question = False
+
         key = pygame.key.get_pressed()
-        if key[pygame.K_e]:
-            locked = False
-    else : question = False
+        if key[pygame.K_LEFT] and scroll > 0:
+            scroll -= 5
+        if key[pygame.K_RIGHT] and scroll < 3000:
+            scroll += 5
 
-    key = pygame.key.get_pressed()
-    if key[pygame.K_LEFT] and scroll > 0:
-        scroll -= 5
-    if key[pygame.K_RIGHT] and scroll < 3000:
-        scroll += 5
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+    else:
+        # 3 detik black screen pas mau ganti room
+        if (startpause+3)<time.time():
+            change = False
+            locked = currentroom.locked
+            if currentroom.left==None and currentroom.right==None:
+                double_door = pygame.image.load("room.png").convert_alpha()
+            print('tree: level',currentroom.level)
+        else:
+            screen.fill((0,0,0))
     
+
+    #kalau sudah sampai jalan kanan/kiri
+    if (potato_x>=200 and potato_x<=300)and potato_y==160 and currentroom.left!=None:
+        startpause= time.time()
+        potato_x = 350
+        potato_y = 450
+        change = True
+        if currentroom.left != None:
+            currentroom = currentroom.left
+
+    if (potato_x>=450 and potato_x<=550)and potato_y==160 and currentroom.right!=None:
+        startpause= time.time()
+        potato_x = 350
+        potato_y = 450
+        change = True
+        currentroom = currentroom.right
+        
+
+        
+        
+
     pygame.display.update()
 
 pygame.quit()
