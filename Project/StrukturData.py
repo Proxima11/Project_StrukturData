@@ -1,9 +1,12 @@
 import random
+from questions import NodeQuestion
+from questions import question
 
 class Room:
     def __init__(self, level, index=0):
         self.treasure = False
-        self.indexQuestion = random.randint(0,99)                   #100 question
+        self.Question : NodeQuestion
+        self.Question = None
         self.powerUp = False
         self.level = level
         self.data = None
@@ -34,6 +37,7 @@ class Room:
 class Cave:
     def __init__(self):
         self.root = Room(0,0)
+        self.listquest = question()
         self.root.locked = False
         self.size = 1
     
@@ -90,7 +94,7 @@ class Cave:
         queue.append(self.root)
         while len(queue) !=0:
             current = queue.pop(0)
-            print(current.index , end = " ")
+            print(current.index , current.Question.question,end = " ")
     
             # Enqueue left child
             if current.left is not None:
@@ -100,4 +104,33 @@ class Cave:
             if current.right is not None:
                 queue.append(current.right)
         print()
-    
+
+    def addQuestion(self):
+        queue = []
+        visited = []
+        not_visited = []
+        for i in range(len(self.listquest.arr_question)):
+            not_visited.append(self.listquest.arr_question[i])
+        queue.append(self.root)
+        current = None
+        #bfs
+        while len(queue) != 0:
+            current = queue.pop(0)
+            #ketika sudah semua pertanyaan terpakai maka diulangi kembali
+            if len(visited) == len(self.listquest.arr_question):
+                while len(visited) != 0:
+                    not_visited.append(visited.pop(0))
+            #isi dengan pertanyaan
+            if current.Question is None:
+                random_index = random.randint(0,len(not_visited))
+                if not_visited[random_index] not in visited:
+                    current.Question = not_visited[random_index]
+                    visited.append(not_visited[random_index])
+                    del not_visited[random_index]
+            #append child kiri jika ada
+            if current.left is not None:
+                queue.append(current.left)
+            #append child kanan jika ada
+            if current.right is not None:
+                queue.append(current.right)
+            

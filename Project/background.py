@@ -1,5 +1,6 @@
 import pygame
 from StrukturData import Cave
+from questions import question
 import time
 
 pygame.init()
@@ -25,6 +26,9 @@ cave = Cave()
 for i in range(8):
     cave.addRoomCave(i+1)
 currentroom = cave.root
+
+#tambah pertanyaan ke tiap ruangan
+cave.addQuestion()
 
 # variables
 locked = currentroom.locked
