@@ -61,19 +61,20 @@ notification = pygame.image.load("notification.png").convert_alpha()
 # movement
 potato_x = 350
 potato_y = 450
+mouse_x = 0
+mouse_y = 0
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
     screen.blit(game_title, (0,0))
-    
     screen.blit(menu_potato, (0,0))
 
     if hover_play:
-        screen.blit(menu_play(0,0))
+        screen.blit(menu_play, (0,0))
     elif hover_highscore:
-        screen.blit(menu_highscore(0,0))
+        screen.blit(menu_highscore, (0,0))
     elif hover_exit:
-        screen.blit(menu_exit(0,0))
+        screen.blit(menu_exit, (0,0))
     else : screen.blit(menu_blank, (0,0))
 
 # draw game room
@@ -98,17 +99,39 @@ run = True
 
 #game play
 while run:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: run = False
+
+    clock.tick(FPS)
+    
     if menu:
         draw_menu()
 
-        mouse_x, mouse_y = pygame.mouse.get_pos()
+        
+        if event.type == pygame.MOUSEMOTION:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        if mouse_x>100 and mouse_x<200 and mouse_y > 100 and mouse_y < 200:
+        if mouse_x>520 and mouse_x<680 and mouse_y > 200 and mouse_y < 280:
             hover_play = True
+            click = pygame.mouse.get_pressed()
+            if click[0]: pass
         else : hover_play = False
 
-    clock.tick(FPS)
-    if play:
+        if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
+            hover_highscore = True
+            click = pygame.mouse.get_pressed()
+            if click[0]: pass
+        else : hover_highscore = False
+        
+        if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450:
+            hover_exit = True
+            click = pygame.mouse.get_pressed()
+            if click[0]: run = False
+        
+        else : hover_exit = False
+
+
+    elif play:
         if not change:
             #gambar ruangan
             draw_room()
@@ -161,9 +184,6 @@ while run:
                     locked = False
             else : question = False
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
         else:
             # 3 detik black screen pas mau ganti room
             if (startpause+3)<time.time():
@@ -176,24 +196,22 @@ while run:
                 screen.fill((0,0,0))
     
 
-    #kalau sudah sampai jalan kanan/kiri
-    if (potato_x>=200 and potato_x<=300)and potato_y==160 and currentroom.left!=None:
-        startpause= time.time()
-        potato_x = 350
-        potato_y = 450
-        change = True
-        if currentroom.left != None:
-            currentroom = currentroom.left
+        #kalau sudah sampai jalan kanan/kiri
+        if (potato_x>=200 and potato_x<=300)and potato_y==160 and currentroom.left!=None:
+            startpause= time.time()
+            potato_x = 350
+            potato_y = 450
+            change = True
+            if currentroom.left != None:
+                currentroom = currentroom.left
 
-    if (potato_x>=450 and potato_x<=550)and potato_y==160 and currentroom.right!=None:
-        startpause= time.time()
-        potato_x = 350
-        potato_y = 450
-        change = True
-        currentroom = currentroom.right
-        
-
-        
+        if (potato_x>=450 and potato_x<=550)and potato_y==160 and currentroom.right!=None:
+            startpause= time.time()
+            potato_x = 350
+            potato_y = 450
+            change = True
+            currentroom = currentroom.right
+    
     pygame.display.update()
 
 pygame.quit()
