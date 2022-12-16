@@ -106,15 +106,15 @@ while run:
     
     if menu:
         draw_menu()
-
-        
         if event.type == pygame.MOUSEMOTION:
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
         if mouse_x>520 and mouse_x<680 and mouse_y > 200 and mouse_y < 280:
             hover_play = True
             click = pygame.mouse.get_pressed()
-            if click[0]: pass
+            if click[0]: 
+                menu = False
+                play = True
         else : hover_play = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
@@ -122,12 +122,11 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]: pass
         else : hover_highscore = False
-        
+
         if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450:
             hover_exit = True
             click = pygame.mouse.get_pressed()
             if click[0]: run = False
-        
         else : hover_exit = False
 
 
