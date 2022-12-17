@@ -67,6 +67,7 @@ no_door = pygame.image.load("dead end.png").convert_alpha()
 potato_right = pygame.image.load("potato.png").convert_alpha()
 potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
+treasure = pygame.image.load("treasure.png").convert_alpha()
 
 # movement
 potato_x = 350
@@ -118,6 +119,10 @@ def draw_notification():
     if door2: screen.blit(notification, (350, 20))
     if door3: screen.blit(notification, (550, 15))
 
+def draw_treasure():
+    if currentroom.treasure and not locked:
+        screen.blit(treasure, (0,0))
+
 run = True
 
 
@@ -165,11 +170,17 @@ while run:
                 rightdoor = True
             else: rightdoor = False
 
+            # status locked
+            locked = currentroom.locked
+
             #gambar ruangan
             draw_room()
 
             # gambar potato
             draw_potato()
+
+            # gambar treasure
+            draw_treasure()
 
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom:
@@ -225,7 +236,6 @@ while run:
                 key = pygame.key.get_pressed()
                 if key[pygame.K_e]:
                     currentroom.locked = False
-                    locked = currentroom.locked
             else : question = False
 
         else:
