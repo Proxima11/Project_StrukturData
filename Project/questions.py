@@ -5,12 +5,15 @@ class NodeQuestion:
         self.answer = []
         self.question = question
         self.correct_answer = answer_correct
+        self.count = 2
         self.answer.append(answer_correct)
         self.answer.append(answer2)
         if answer3 != "":
             self.answer.append(answer3)
+            self.count+=1
         if answer4 != "":
             self.answer.append(answer4)
+            self.count+=1
         self.correct = False
         self.random_urutan_jawaban()
     

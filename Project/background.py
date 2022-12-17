@@ -20,6 +20,7 @@ cave = Cave()
 for i in range(8):
     cave.addRoomCave(i+1)
 currentroom = cave.root
+mainroom = cave.root
 
 #tambah pertanyaan ke tiap ruangan
 cave.addQuestion()
@@ -32,6 +33,7 @@ hover_exit = False
 
 # game variables
 play = False
+paused = False
 locked = currentroom.locked
 right = True
 question = False
@@ -41,6 +43,8 @@ door2 = False
 door3 = False
 change = False
 startpause = 0
+leftdoor = False
+rightdoor = False
 
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
@@ -52,8 +56,14 @@ game_title = pygame.image.load("gametitle.png").convert_alpha()
 menu_potato = pygame.image.load("menupotato.png").convert_alpha()
 
 # game images
+main_room_double = pygame.image.load("main room double.png").convert_alpha()
+main_room_left = pygame.image.load("main room left.png").convert_alpha()
+main_room_right = pygame.image.load("main room right.png").convert_alpha()
 locked_bg = pygame.image.load("locked.png").convert_alpha()
 double_door = pygame.image.load("double door.png").convert_alpha()
+left_door = pygame.image.load("door left.png").convert_alpha()
+right_door = pygame.image.load("door right.png").convert_alpha()
+no_door = pygame.image.load("dead end.png").convert_alpha()
 potato_right = pygame.image.load("potato.png").convert_alpha()
 potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
@@ -82,7 +92,21 @@ def draw_room():
     if locked:
         screen.blit(locked_bg, (0,0))
     else:
-        screen.blit(double_door, (0,0))
+        if currentroom == mainroom:
+            if rightdoor and leftdoor:
+                screen.blit(main_room_double, (0,0))
+            elif rightdoor and not leftdoor:
+                screen.blit(main_room_right, (0,0))
+            elif leftdoor and not rightdoor:
+                screen.blit(main_room_left, (0,0))
+        else:
+            if rightdoor and leftdoor:
+                screen.blit(double_door, (0,0))
+            elif rightdoor and not leftdoor:
+                screen.blit(right_door, (0,0))
+            elif leftdoor and not rightdoor:
+                screen.blit(left_door, (0,0))
+            else: screen.blit(no_door, (0,0))
 
 def draw_potato():
     if right: screen.blit(potato_right, (potato_x , potato_y))
@@ -132,6 +156,15 @@ while run:
 
     elif play:
         if not change:
+
+            # menentukan bentuk ruangan
+            if currentroom.left != None:
+                leftdoor = True
+            else: leftdoor = False
+            if currentroom.right != None:
+                rightdoor = True
+            else: rightdoor = False
+
             #gambar ruangan
             draw_room()
 
@@ -139,6 +172,17 @@ while run:
             draw_potato()
 
             move = pygame.key.get_pressed()
+            if potato_y >= 450 and currentroom != mainroom:
+                if move[pygame.K_DOWN]:
+                    if potato_x > 300 and potato_x < 500: potato_y+=5
+                if move[pygame.K_LEFT]:
+                    if potato_x > 200 and potato_x < 400 and potato_y > 500: potato_x+=5
+                    else: potato_x = potato_x
+                if move[pygame.K_RIGHT]:
+                    if potato_x < 400 and potato_x > 200 and potato_y > 500: potato_x-=5
+                    else : potato_x = potato_x
+                if move[pygame.K_UP]:
+                    if potato_x > 300 and potato_x < 500: potato_y-=5
             if potato_y > 300:
                 if move[pygame.K_LEFT]:
                     if potato_x > 100: potato_x-=5
@@ -209,7 +253,15 @@ while run:
             potato_x = 350
             potato_y = 450
             change = True
-            currentroom = currentroom.right
+            if currentroom.right != None:
+                currentroom = currentroom.right
+
+        # enable return
+        if currentroom != mainroom and potato_y > 560:
+            startpause= time.time()
+            potato_x = 350
+            potato_y = 200
+            change = True
     
     pygame.display.update()
 
