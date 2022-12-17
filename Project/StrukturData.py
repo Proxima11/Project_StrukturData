@@ -14,6 +14,7 @@ class Room:
         self.locked = True
         self.left = None
         self.right = None
+        self.previous = None
     
     def isFull(self):
         if (self.left!=None and self.right!=None):
@@ -30,8 +31,10 @@ class Room:
     def addRoom(self, room):
         if self.left == None:
             self.left= room
+            self.left.previous = self
         elif self.right == None:
             self.right = room
+            self.right.previous = self
             
 
 class Cave:

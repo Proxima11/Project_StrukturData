@@ -224,7 +224,8 @@ while run:
                 question = True
                 key = pygame.key.get_pressed()
                 if key[pygame.K_e]:
-                    locked = False
+                    currentroom.locked = False
+                    locked = currentroom.locked
             else : question = False
 
         else:
@@ -259,9 +260,11 @@ while run:
         # enable return
         if currentroom != mainroom and potato_y > 560:
             startpause= time.time()
+            locked = False
             potato_x = 350
             potato_y = 200
             change = True
+            currentroom = currentroom.previous
     
     pygame.display.update()
 
