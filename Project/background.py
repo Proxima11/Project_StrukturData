@@ -24,6 +24,7 @@ mainroom = cave.root
 
 #tambah pertanyaan ke tiap ruangan
 cave.addQuestion()
+cave.printRoom()
 
 # menu variable 
 menu = True
@@ -245,7 +246,13 @@ while run:
                 locked = currentroom.locked
                 if currentroom.left==None and currentroom.right==None:
                     double_door = pygame.image.load("room.png").convert_alpha()
-                print('tree: level',currentroom.level)
+                elif currentroom.left==None:
+                    double_door = pygame.image.load("door left.png").convert_alpha()
+                elif currentroom.right==None:
+                    double_door = pygame.image.load("door right.png").convert_alpha()
+                else:
+                    double_door = pygame.image.load("double door.png").convert_alpha()
+                print('tree: level',currentroom.level,', index',currentroom.index)
             else:
                 screen.fill((0,0,0))
     

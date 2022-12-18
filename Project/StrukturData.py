@@ -3,7 +3,7 @@ from questions import NodeQuestion
 from questions import question
 
 class Room:
-    def __init__(self, level, index=0):
+    def __init__(self, level, index=0, previous= None):
         self.treasure = False
         self.Question : NodeQuestion
         self.Question = None
@@ -14,7 +14,7 @@ class Room:
         self.locked = True
         self.left = None
         self.right = None
-        self.previous = None
+        self.previous = previous
     
     def isFull(self):
         if (self.left!=None and self.right!=None):
@@ -29,12 +29,16 @@ class Room:
             return False
     
     def addRoom(self, room):
-        if self.left == None:
+        if (self.isEmpty()==True):
+            temp = random.randint(0,1)
+            if temp==0:
+                self.left = room
+            else:
+                self.right = room
+        elif self.left == None:
             self.left= room
-            self.left.previous = self
         elif self.right == None:
             self.right = room
-            self.right.previous = self
             
 
 class Cave:
@@ -59,13 +63,17 @@ class Cave:
     def addRoomCave(self,index):
         queue = []
         queue.append(self.root)
+    
         while len(queue) != 0:
             current = queue.pop(0)
             if current.isFull():
-                queue.append(current.left)
-                queue.append(current.right)
+                temp = random.randint(0,1)
+                if temp==0:
+                    queue.append(current.left)
+                else:
+                    queue.append(current.right)
             else:
-                current.addRoom(Room(current.level+1,index))
+                current.addRoom(Room(current.level+1,index, current))
                 self.size +=1
                 break
 
@@ -95,9 +103,30 @@ class Cave:
     def printRoom(self):
         queue = []
         queue.append(self.root)
+        print('index  :  ', end='')
         while len(queue) !=0:
             current = queue.pop(0)
-            print(current.index , current.Question.question,end = " ")
+            print(current.index ,end = " ")
+    
+            # Enqueue left child
+            if current.left is not None:
+                queue.append(current.left)
+    
+            # Enqueue right child
+            if current.right is not None:
+                queue.append(current.right)
+        print()
+
+        queue = []
+        queue.append(self.root)
+        print('parrent: ', end='')
+        while len(queue) !=0:
+            current = queue.pop(0)
+            if current.previous !=None:
+                print(current.previous.index ,end = " ")
+            else:
+                print('-1', end=" ")
+            
     
             # Enqueue left child
             if current.left is not None:
