@@ -46,7 +46,7 @@ play = False
 paused = False
 locked = currentroom.locked
 right = True
-question = False
+question_notif = False
 loading = False
 door1 = False
 door2 = False
@@ -55,6 +55,7 @@ change = False
 startpause = 0
 leftdoor = False
 rightdoor = False
+questionpage = False
 
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
@@ -83,6 +84,12 @@ powerUproot = pygame.image.load("powerupcheckroot.png").convert_alpha()
 powerUplevel = pygame.image.load("powerupshowlevel.png").convert_alpha()
 powerUphint = pygame.image.load("powerupquestionhint.png").convert_alpha()
 
+# question image
+questionbg = pygame.image.load("questionbg.png").convert_alpha()
+choice1 = pygame.image.load("choice1.png").convert_alpha()
+choice2 = pygame.image.load("choice2.png").convert_alpha()
+choice3 = pygame.image.load("choice3.png").convert_alpha()
+choice4 = pygame.image.load("choice4.png").convert_alpha()
 
 # movement
 potato_x = 350
@@ -129,7 +136,7 @@ def draw_potato():
     else: screen.blit(potato_left, (potato_x, potato_y))
 
 def draw_notification():
-    if question: screen.blit(notification, (350, 250))
+    if question_notif: screen.blit(notification, (350, 250))
     if door1: screen.blit(notification, (250, 30))
     if door2: screen.blit(notification, (350, 20))
     if door3: screen.blit(notification, (550, 15))
@@ -194,6 +201,13 @@ def usePowerUp():
     
     queue.put(0)
 
+def draw_question():
+    screen.blit(questionbg,(0,0))
+    screen.blit(choice1,(0,0))
+    screen.blit(choice2,(0,0))
+    screen.blit(choice3,(0,0))
+    screen.blit(choice4,(0,0))
+    pass
 
 run = True
 
@@ -229,7 +243,6 @@ while run:
             if click[0]: run = False
         else : hover_exit = False
 
-
     elif play:
         if not change:
 
@@ -257,9 +270,6 @@ while run:
 
             # gambar treasure
             draw_treasure()
-
-           
-            
 
             usePU = pygame.key.get_pressed()
             if usePU[pygame.K_p]:
@@ -315,11 +325,13 @@ while run:
             # notifikasi
             draw_notification()
             if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False: 
-                question = True
+                question_notif = True
                 key = pygame.key.get_pressed()
                 if key[pygame.K_e]:
-                    currentroom.locked = False
-            else : question = False
+                    questionpage = True
+                    play = False
+                    #currentroom.locked = False
+            else : question_notif = False
 
         else:
             # 3 detik black screen pas mau ganti room
@@ -364,7 +376,19 @@ while run:
             potato_y = 200
             change = True
             currentroom = currentroom.previous
-    
+
+    elif questionpage:
+        exit = pygame.key.get_pressed()
+        draw_question()
+        if exit[pygame.K_ESCAPE]:
+            questionpage = False
+            play = True
+
+        elif exit[pygame.K_n]:
+            questionpage = False
+            play = True
+            currentroom.locked = False
+
     pygame.display.update()
 
 pygame.quit()
