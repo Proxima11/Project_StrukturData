@@ -2,8 +2,6 @@ import pygame
 from StrukturData import Cave
 from questions import question
 import time
-import queue as q
-
 
 pygame.init()
 
@@ -28,13 +26,6 @@ mainroom = cave.root
 cave.addQuestion()
 cave.printRoom()
 
-#tambah powerup
-cave.addPowerUp()
-# queue untuk power up nantinya
-queue = q.SimpleQueue()
-queue.put(0)
-queue.put(0)
-
 # menu variable 
 menu = True
 hover_play = False
@@ -46,7 +37,7 @@ play = False
 paused = False
 locked = currentroom.locked
 right = True
-question_notif = False
+question = False
 loading = False
 door1 = False
 door2 = False
@@ -55,7 +46,6 @@ change = False
 startpause = 0
 leftdoor = False
 rightdoor = False
-questionpage = False
 
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
@@ -79,17 +69,6 @@ potato_right = pygame.image.load("potato.png").convert_alpha()
 potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
 treasure = pygame.image.load("treasure.png").convert_alpha()
-powerUptime = pygame.image.load("powerupbonustime.png").convert_alpha()
-powerUproot = pygame.image.load("powerupcheckroot.png").convert_alpha()
-powerUplevel = pygame.image.load("powerupshowlevel.png").convert_alpha()
-powerUphint = pygame.image.load("powerupquestionhint.png").convert_alpha()
-
-# question image
-questionbg = pygame.image.load("questionbg.png").convert_alpha()
-choice1 = pygame.image.load("choice1.png").convert_alpha()
-choice2 = pygame.image.load("choice2.png").convert_alpha()
-choice3 = pygame.image.load("choice3.png").convert_alpha()
-choice4 = pygame.image.load("choice4.png").convert_alpha()
 
 # movement
 potato_x = 350
@@ -136,7 +115,7 @@ def draw_potato():
     else: screen.blit(potato_left, (potato_x, potato_y))
 
 def draw_notification():
-    if question_notif: screen.blit(notification, (350, 250))
+    if question: screen.blit(notification, (350, 250))
     if door1: screen.blit(notification, (250, 30))
     if door2: screen.blit(notification, (350, 20))
     if door3: screen.blit(notification, (550, 15))
@@ -145,69 +124,13 @@ def draw_treasure():
     if currentroom.treasure and not locked:
         screen.blit(treasure, (0,0))
 
-def draw_powerup():
-    if currentroom.powerUp:
-        if currentroom.powerUptype == 1:
-            screen.blit(powerUptime, (0, 0))
-        elif currentroom.powerUptype == 2:
-            screen.blit(powerUproot, (0, 0))
-        elif currentroom.powerUptype == 3:
-            screen.blit(powerUplevel, (0, 0))
-        elif currentroom.powerUptype == 4:
-            screen.blit(powerUphint, (0, 0))
-
-def draw_held_powerup():
-    powerup1 = queue.get()
-    powerup2 = queue.get()
-
-    if powerup1 == 0:
-        pass
-    elif powerup1 == 1:
-        pass
-    elif powerup1 == 2:
-        pass
-    elif powerup1 == 3:
-        pass
-    elif powerup1 == 4:
-        pass
-
-    if powerup2 == 0:
-        pass
-    elif powerup2 == 1:
-        pass
-    elif powerup2 == 2:
-        pass
-    elif powerup2 == 3:
-        pass
-    elif powerup2 == 4:
-        pass
-
-    queue.put(powerup1)
-    queue.put(powerup2)
-
-def usePowerUp():
-    use = queue.get()
-
-    if use == 0:
-        pass
-    elif use == 1:
-        pass
-    elif use == 2:
-        pass
-    elif use == 3:
-        pass
-    elif use == 4:
-        pass
-    
-    queue.put(0)
-
-def draw_question_():
+def draw_question():
     if currentroom.Question is not None and not currentroom.Question.isAnswered:
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',28)
         collection = [word.split('/') for word in currentroom.Question.question.splitlines()]
         space = font.size(' ')[0]
-        pos = (115,75)
+        pos = (100,50)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:
@@ -223,16 +146,8 @@ def draw_question_():
             temp_y = temp_y + 30
         temp_y += 30
 
-def draw_question():
-    screen.blit(questionbg,(0,0))
-    screen.blit(choice1,(0,0))
-    screen.blit(choice2,(0,0))
-    screen.blit(choice3,(0,0))
-    screen.blit(choice4,(0,0))
-    draw_question_()
-    pass
-
 run = True
+
 
 #game play
 while run:
@@ -266,9 +181,9 @@ while run:
             if click[0]: run = False
         else : hover_exit = False
 
+
     elif play:
         if not change:
-
 
             # menentukan bentuk ruangan
             if currentroom.left != None:
@@ -284,19 +199,11 @@ while run:
             #gambar ruangan
             draw_room()
 
-            # gambar powerup
-            if not locked:
-                draw_powerup()
-
             # gambar potato
             draw_potato()
 
             # gambar treasure
             draw_treasure()
-
-            usePU = pygame.key.get_pressed()
-            if usePU[pygame.K_p]:
-                usePowerUp()
 
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom:
@@ -347,14 +254,17 @@ while run:
 
             # notifikasi
             draw_notification()
+            key = pygame.key.get_pressed()
             if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False: 
-                question_notif = True
-                key = pygame.key.get_pressed()
+                question = True
                 if key[pygame.K_e]:
-                    questionpage = True
-                    play = False
-                    #currentroom.locked = False
-            else : question_notif = False
+                    currentroom.locked = False
+            else :
+                question = False
+            
+            if question is not None and currentroom.locked is False:
+                draw_question()
+
 
         else:
             # 3 detik black screen pas mau ganti room
@@ -399,19 +309,7 @@ while run:
             potato_y = 200
             change = True
             currentroom = currentroom.previous
-
-    elif questionpage:
-        exit = pygame.key.get_pressed()
-        draw_question()
-        if exit[pygame.K_ESCAPE]:
-            questionpage = False
-            play = True
-
-        elif exit[pygame.K_n]:
-            questionpage = False
-            play = True
-            currentroom.locked = False
-
+    
     pygame.display.update()
 
 pygame.quit()
