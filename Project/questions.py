@@ -48,7 +48,7 @@ class question:
         self.add_question("Kumpulan dari simpul dan busur disebut", "graph", "stack", "quueue", "linked list")#3
         self.add_question("Jika sebuah undirected graph memiliki edge sebagai / berikut: (A,B), (B,C), (C,A), (D,E), (B,D) apakah graph / tersebut membentuk cycle graph?", "ya", "tidak", "", "")#4
         self.add_question("Istilah dalam graph jika ada sebuah edge yang ditulis / e = (v,w) dan w terletak pada e maka hal tersebut disebut", "incident", "outdegree", "degree", "adjacent")#5
-        self.add_question("Pada graph tak berarah, dua simpul disebut adjacent / ketika", "ada busur yang menghubungkan kedua simpul", "ada simpul yang menghubungkan kedua simpul", "tidak ada busur yang menghubungkan kedua simpul", "ada busur dan simpul yang menghubungkan kedua simpul")#6
+        self.add_question("Pada graph tak berarah, dua simpul disebut adjacent / ketika", "ada busur yang menghubungkan / kedua simpul", "ada simpul yang menghubungkan / kedua simpul", "tidak ada busur yang / menghubungkan kedua simpul", "ada busur dan simpul / yang menghubungkan kedua simpul")#6
         self.add_question("Beberapa algoritma yang dapat mencari shortest path / sebuah graph, kecuali", "max-sum", "warshall's algorithm", "MST", "djikstra algorithm")#7
         self.add_question("Penelusuran graph dengan mendahulukan arah kedalaman / disebut dengan", "DFS", "BFS", "Greedy", "Dynamic Programming")#8
         self.add_question("Dalam Single Linked List, ada tambahan data di dalam / node yang berfungsi untuk menyambungkan suatu node / dengan node lainnya agar tidak putus disebut", "pointer", "line", "number", "null")#9
@@ -66,7 +66,7 @@ class question:
         self.add_question("Suatu kelompok data yang dapat dikarakteristikan oleh / organisasi serta operasi adalah", "Struktur data", "Kolom data", "Pengaturan data", "Tipe data")#21
         self.add_question("Struktur data standar yang digunakan dibawah ini adalah, kecuali", "Stuck", "Graph", "Queue", "Tree")#22
         self.add_question("Berapa macam Linked List", "2", "1", "3", "4")#23
-        self.add_question("Prinsip kerja dari queue adalah", "last in last out", "first in last out1", "sama dengan stack", "last in first out")#24
+        self.add_question("Prinsip kerja dari queue adalah", "last in last out", "first in last out", "sama dengan stack", "last in first out")#24
         self.add_question("Antrean yang dimanfaatkan berdasarkan kepentingan / penggunanya, disebut dengan", "priority queue", "performance queue", "input restricted queue", "output restricted queue")#25
         self.add_question("Apabila ada satu data yang keluar dari dalam queue, / maka posisi yang berubah adalah indikator (pointer)", "FRONT", "TOP", "BOTTOM", "REAR")#26
         self.add_question("Jika Suatu pohon binner memiliki simpul sebanyak 5, / maka ruasnya jumlahnya", "5", "4", "7", "6")#27
@@ -89,7 +89,7 @@ class question:
         self.add_question("Jika saat ini elemen dalam sebuah STACK adalah X(top) U E, / dan diberikan operasi push('T'), push('V'), pop(), /  pop(), push('O'), pop(). Maka elemen dalam stack saat ini adalah", "(O X U E)", "(X U E)", "(V X U E)", "(U E)")#44
         self.add_question("Susunan preorder sebuah tranversal tree adalah 30, 20, 10, / 15, 25, 23, 39, 35, 42. Apakah susunan postorder /  tree yang sama?", "15, 10, 23, 25, 20, 35, 42, 39, 30", "10, 20, 15, 23, 25, 35, 42, 39, 30", "15, 10, 25, 23, 20, 42, 35, 39, 30", "15, 20, 10, 23, 25, 42, 35, 39, 30")#45
         self.add_question("Berapakah maksimum node dalam binary search tree dengan / height = 5?", "2^6-1", "2^5-1", "2^5", "2^6")#46
-        self.add_question("Apakah Breadth-First-Search menggunakan stack atau dan queue?", "Queue saja", "Stack saja", "VKeduanya", "Tidak keduanya")#47
+        self.add_question("Apakah Breadth-First-Search menggunakan stack atau dan queue?", "Queue saja", "Stack saja", "Keduanya", "Tidak keduanya")#47
         self.add_question("Tree yang balance memiliki jumlah item yang sama pada tiap / subtree", "Benar", "Salah", "", "")#48
         self.add_question("Metode transversal tree manakah yang digunakan untuk output / isi dari binary tree secara ascending?", "In-order", "Pre-order", "Post-order", "Monastic Orders")#49
         self.add_question("Sebuah tree terdiri dari ..... yang terhubung dengan garis", "Node", "Root", "Leaf", "Fruit")#50

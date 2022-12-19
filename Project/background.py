@@ -243,6 +243,94 @@ def draw_question_():
             temp_y = temp_y + 30
         temp_y += 30
 
+def draw_answer1():
+    if currentroom.Question is not None and not currentroom.Question.isAnswered:
+        white = (255, 255, 255)
+        font = pygame.font.SysFont('freesansbold.ttf',22)
+        collection = [word.split('/') for word in currentroom.Question.answer[0].splitlines()]
+        space = font.size(' ')[0]
+        pos = (125,315)
+        temp_x = pos[0]
+        temp_y = pos[1]
+        for lines in collection:
+            for word in lines:
+                word_surface = font.render(word, True, white)
+                word_width, word_height = word_surface.get_size()
+                if (temp_x + word_width) > 700:
+                    temp_x=pos[0]
+                    temp_y += 30
+                screen.blit(word_surface, (temp_x,temp_y))
+                temp_x += (word_width + space)
+            temp_x = pos[0]
+            temp_y = temp_y + 30
+        temp_y += 30
+
+def draw_answer2():
+    if currentroom.Question is not None and not currentroom.Question.isAnswered:
+        white = (255, 255, 255)
+        font = pygame.font.SysFont('freesansbold.ttf',22)
+        collection = [word.split('/') for word in currentroom.Question.answer[1].splitlines()]
+        space = font.size(' ')[0]
+        pos = (520,315)
+        temp_x = pos[0]
+        temp_y = pos[1]
+        for lines in collection:
+            for word in lines:
+                word_surface = font.render(word, True, white)
+                word_width, word_height = word_surface.get_size()
+                if (temp_x + word_width) > 700:
+                    temp_x=pos[0]
+                    temp_y += 30
+                screen.blit(word_surface, (temp_x,temp_y))
+                temp_x += (word_width + space)
+            temp_x = pos[0]
+            temp_y = temp_y + 30
+        temp_y += 30
+
+def draw_answer3():
+    if currentroom.Question is not None and not currentroom.Question.isAnswered and len(currentroom.Question.answer) > 2:
+        white = (255, 255, 255)
+        font = pygame.font.SysFont('freesansbold.ttf',22)
+        collection = [word.split('/') for word in currentroom.Question.answer[2].splitlines()]
+        space = font.size(' ')[0]
+        pos = (125,470)
+        temp_x = pos[0]
+        temp_y = pos[1]
+        for lines in collection:
+            for word in lines:
+                word_surface = font.render(word, True, white)
+                word_width, word_height = word_surface.get_size()
+                if (temp_x + word_width) > 700:
+                    temp_x=pos[0]
+                    temp_y += 30
+                screen.blit(word_surface, (temp_x,temp_y))
+                temp_x += (word_width + space)
+            temp_x = pos[0]
+            temp_y = temp_y + 30
+        temp_y += 30
+
+def draw_answer4():
+    if currentroom.Question is not None and not currentroom.Question.isAnswered:
+        white = (255, 255, 255)
+        font = pygame.font.SysFont('freesansbold.ttf',22)
+        collection = [word.split('/') for word in currentroom.Question.answer[3].splitlines()]
+        space = font.size(' ')[0]
+        pos = (520,470)
+        temp_x = pos[0]
+        temp_y = pos[1]
+        for lines in collection:
+            for word in lines:
+                word_surface = font.render(word, True, white)
+                word_width, word_height = word_surface.get_size()
+                if (temp_x + word_width) > 700:
+                    temp_x=pos[0]
+                    temp_y += 30
+                screen.blit(word_surface, (temp_x,temp_y))
+                temp_x += (word_width + space)
+            temp_x = pos[0]
+            temp_y = temp_y + 30
+        temp_y += 30
+
 def draw_question():
     screen.blit(questionbg,(0,0))
     screen.blit(choice1,(0,0))
@@ -250,6 +338,10 @@ def draw_question():
     screen.blit(choice3,(0,0))
     screen.blit(choice4,(0,0))
     draw_question_()
+    draw_answer1()
+    draw_answer2()
+    draw_answer3()
+    draw_answer4()
     pass
 
 run = True

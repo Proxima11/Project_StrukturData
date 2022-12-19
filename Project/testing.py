@@ -146,6 +146,28 @@ def draw_question():
             temp_y = temp_y + 30
         temp_y += 30
 
+def draw_answer1():
+    if currentroom.Question is not None and not currentroom.Question.isAnswered:
+        white = (255, 255, 255)
+        font = pygame.font.SysFont('freesansbold.ttf',24)
+        collection = [word.split('/') for word in currentroom.Question.answer[0].splitlines()]
+        space = font.size(' ')[0]
+        pos = (100,250)
+        temp_x = pos[0]
+        temp_y = pos[1]
+        for lines in collection:
+            for word in lines:
+                word_surface = font.render(word, True, white)
+                word_width, word_height = word_surface.get_size()
+                if (temp_x + word_width) > 700:
+                    temp_x=pos[0]
+                    temp_y += 30
+                screen.blit(word_surface, (temp_x,temp_y))
+                temp_x += (word_width + space)
+            temp_x = pos[0]
+            temp_y = temp_y + 30
+        temp_y += 30
+
 run = True
 
 
@@ -264,6 +286,7 @@ while run:
             
             if question is not None and currentroom.locked is False:
                 draw_question()
+                draw_answer1()
 
 
         else:
