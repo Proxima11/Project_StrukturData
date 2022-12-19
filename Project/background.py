@@ -2,6 +2,8 @@ import pygame
 from StrukturData import Cave
 from questions import question
 import time
+import queue as q
+
 
 pygame.init()
 
@@ -25,6 +27,11 @@ mainroom = cave.root
 #tambah pertanyaan ke tiap ruangan
 cave.addQuestion()
 cave.printRoom()
+
+#tambah powerup
+cave.addPowerUp()
+# queue untuk power up nantinya
+queue = q.SimpleQueue()
 
 # menu variable 
 menu = True
@@ -69,6 +76,11 @@ potato_right = pygame.image.load("potato.png").convert_alpha()
 potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
 treasure = pygame.image.load("treasure.png").convert_alpha()
+powerUptime = pygame.image.load("powerupbonustime.png").convert_alpha()
+powerUproot = pygame.image.load("powerupcheckroot.png").convert_alpha()
+powerUplevel = pygame.image.load("powerupshowlevel.png").convert_alpha()
+powerUphint = pygame.image.load("powerupquestionhint.png").convert_alpha()
+
 
 # movement
 potato_x = 350
@@ -124,8 +136,25 @@ def draw_treasure():
     if currentroom.treasure and not locked:
         screen.blit(treasure, (0,0))
 
-run = True
+def draw_powerup():
+    if currentroom.powerUp:
+        if currentroom.powerUptype == 1:
+            screen.blit(powerUptime, (350, 180))
+        elif currentroom.powerUptype == 2:
+            screen.blit(powerUproot, (350, 180))
+        elif currentroom.powerUptype == 3:
+            screen.blit(powerUplevel, (350, 180))
+        elif currentroom.powerUptype == 4:
+            screen.blit(powerUphint, (350, 180))
 
+def draw_held_powerup():
+    pass
+
+def usePowerUp():
+    pass
+
+
+run = True
 
 #game play
 while run:
@@ -163,6 +192,7 @@ while run:
     elif play:
         if not change:
 
+
             # menentukan bentuk ruangan
             if currentroom.left != None:
                 leftdoor = True
@@ -182,6 +212,14 @@ while run:
 
             # gambar treasure
             draw_treasure()
+
+            # gambar powerup
+            if not locked:
+                draw_powerup()
+
+            usePU = pygame.key.get_pressed()
+            if usePU[pygame.K_p]:
+                usePowerUp()
 
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom:
