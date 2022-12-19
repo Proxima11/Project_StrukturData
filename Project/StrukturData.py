@@ -154,7 +154,7 @@ class Cave:
                     not_visited.append(visited.pop(0))
             #isi dengan pertanyaan
             if current.Question is None:
-                random_index = random.randint(0,len(not_visited))
+                random_index = random.randint(0,len(not_visited)-1)
                 if not_visited[random_index] not in visited:
                     current.Question = not_visited[random_index]
                     visited.append(not_visited[random_index])
