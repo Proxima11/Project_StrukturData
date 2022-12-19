@@ -130,7 +130,7 @@ def draw_question():
         font = pygame.font.SysFont('freesansbold.ttf',28)
         collection = [word.split('/') for word in currentroom.Question.question.splitlines()]
         space = font.size(' ')[0]
-        pos = (100,100)
+        pos = (100,50)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:

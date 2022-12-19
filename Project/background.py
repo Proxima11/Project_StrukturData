@@ -201,12 +201,35 @@ def usePowerUp():
     
     queue.put(0)
 
+def draw_question_():
+    if currentroom.Question is not None and not currentroom.Question.isAnswered:
+        white = (255, 255, 255)
+        font = pygame.font.SysFont('freesansbold.ttf',28)
+        collection = [word.split('/') for word in currentroom.Question.question.splitlines()]
+        space = font.size(' ')[0]
+        pos = (115,75)
+        temp_x = pos[0]
+        temp_y = pos[1]
+        for lines in collection:
+            for word in lines:
+                word_surface = font.render(word, True, white)
+                word_width, word_height = word_surface.get_size()
+                if (temp_x + word_width) > 700:
+                    temp_x=pos[0]
+                    temp_y += 30
+                screen.blit(word_surface, (temp_x,temp_y))
+                temp_x += (word_width + space)
+            temp_x = pos[0]
+            temp_y = temp_y + 30
+        temp_y += 30
+
 def draw_question():
     screen.blit(questionbg,(0,0))
     screen.blit(choice1,(0,0))
     screen.blit(choice2,(0,0))
     screen.blit(choice3,(0,0))
     screen.blit(choice4,(0,0))
+    draw_question_()
     pass
 
 run = True
