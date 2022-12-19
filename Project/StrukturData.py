@@ -144,7 +144,8 @@ class Cave:
         not_visited = []
         for i in range(len(self.listquest.arr_question)):
             not_visited.append(self.listquest.arr_question[i])
-        queue.append(self.root)
+        queue.append(self.root.left)
+        queue.append(self.root.right)
         current = None
         #bfs
         while len(queue) != 0:
