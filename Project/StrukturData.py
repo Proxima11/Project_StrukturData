@@ -168,6 +168,7 @@ class Cave:
                 queue.append(current.right)
 
     def addPowerUp(self):
+        queue = []
 
         current = self.root
         self.__addpowerup(current)

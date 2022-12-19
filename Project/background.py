@@ -79,26 +79,12 @@ potato_right = pygame.image.load("potato.png").convert_alpha()
 potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
 treasure = pygame.image.load("treasure.png").convert_alpha()
-
-# power up images
 powerUptime = pygame.image.load("powerupbonustime.png").convert_alpha()
 powerUproot = pygame.image.load("powerupcheckroot.png").convert_alpha()
 powerUplevel = pygame.image.load("powerupshowlevel.png").convert_alpha()
 powerUphint = pygame.image.load("powerupquestionhint.png").convert_alpha()
 
-powerup1empty = pygame.image.load("powerup1empty.png").convert_alpha()
-powerup1time = pygame.image.load("powerup1time.png").convert_alpha()
-powerup1root = pygame.image.load("powerup1root.png").convert_alpha()
-powerup1level = pygame.image.load("powerup1level.png").convert_alpha()
-powerup1hint = pygame.image.load("powerup1hint.png").convert_alpha()
-
-powerup2empty = pygame.image.load("powerup2empty.png").convert_alpha()
-powerup2time = pygame.image.load("powerup2time.png").convert_alpha()
-powerup2root = pygame.image.load("powerup2root.png").convert_alpha()
-powerup2level = pygame.image.load("powerup2level.png").convert_alpha()
-powerup2hint = pygame.image.load("powerup2hint.png").convert_alpha()
-
-# question images
+# question image
 questionbg = pygame.image.load("questionbg.png").convert_alpha()
 choice1 = pygame.image.load("choice1.png").convert_alpha()
 choice2 = pygame.image.load("choice2.png").convert_alpha()
@@ -175,26 +161,26 @@ def draw_held_powerup():
     powerup2 = queue.get()
 
     if powerup1 == 0:
-        screen.blit(powerup1empty, (0, 0))
+        pass
     elif powerup1 == 1:
-        screen.blit(powerup1time, (0, 0))
+        pass
     elif powerup1 == 2:
-        screen.blit(powerup1root, (0, 0))
+        pass
     elif powerup1 == 3:
-        screen.blit(powerup1level, (0, 0))
+        pass
     elif powerup1 == 4:
-        screen.blit(powerup1hint, (0, 0))
+        pass
 
     if powerup2 == 0:
-        screen.blit(powerup2empty, (0, 0))
+        pass
     elif powerup2 == 1:
-        screen.blit(powerup2time, (0, 0))
+        pass
     elif powerup2 == 2:
-        screen.blit(powerup2root, (0, 0))
+        pass
     elif powerup2 == 3:
-        screen.blit(powerup2level, (0, 0))
+        pass
     elif powerup2 == 4:
-        screen.blit(powerup2hint, (0, 0))
+        pass
 
     queue.put(powerup1)
     queue.put(powerup2)
@@ -203,18 +189,12 @@ def usePowerUp():
     use = queue.get()
 
     if use == 0:
-        print("no powerup")
         pass
     elif use == 1:
         pass
     elif use == 2:
-        found = cave.poweruproot(currentroom)
-        if found:
-            pass
-        else :
-            pass
+        pass
     elif use == 3:
-        level = cave.poweruplevel()
         pass
     elif use == 4:
         pass
@@ -290,9 +270,6 @@ while run:
 
             # gambar treasure
             draw_treasure()
-
-            # gambar help powerup
-            draw_held_powerup()
 
             usePU = pygame.key.get_pressed()
             if usePU[pygame.K_p]:
