@@ -258,12 +258,11 @@ def draw_answer1():
                 word_width, word_height = word_surface.get_size()
                 if (temp_x + word_width) > 700:
                     temp_x=pos[0]
-                    temp_y += 30
+                    temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
                 temp_x += (word_width + space)
             temp_x = pos[0]
-            temp_y = temp_y + 30
-        temp_y += 30
+            temp_y = temp_y + 24
 
 def draw_answer2():
     if currentroom.Question is not None and not currentroom.Question.isAnswered:
@@ -280,12 +279,11 @@ def draw_answer2():
                 word_width, word_height = word_surface.get_size()
                 if (temp_x + word_width) > 700:
                     temp_x=pos[0]
-                    temp_y += 30
+                    temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
                 temp_x += (word_width + space)
             temp_x = pos[0]
-            temp_y = temp_y + 30
-        temp_y += 30
+            temp_y = temp_y + 24
 
 def draw_answer3():
     if currentroom.Question is not None and not currentroom.Question.isAnswered and len(currentroom.Question.answer) > 2:
@@ -293,7 +291,7 @@ def draw_answer3():
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[2].splitlines()]
         space = font.size(' ')[0]
-        pos = (125,470)
+        pos = (125,450)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:
@@ -302,20 +300,19 @@ def draw_answer3():
                 word_width, word_height = word_surface.get_size()
                 if (temp_x + word_width) > 700:
                     temp_x=pos[0]
-                    temp_y += 30
+                    temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
                 temp_x += (word_width + space)
             temp_x = pos[0]
-            temp_y = temp_y + 30
-        temp_y += 30
+            temp_y = temp_y + 24
 
 def draw_answer4():
-    if currentroom.Question is not None and not currentroom.Question.isAnswered:
+    if currentroom.Question is not None and not currentroom.Question.isAnswered  and len(currentroom.Question.answer) > 2:
         white = (255, 255, 255)
-        font = pygame.font.SysFont('freesansbold.ttf',22)
+        font = pygame.font.SysFont('freesansbold.ttf', 22)
         collection = [word.split('/') for word in currentroom.Question.answer[3].splitlines()]
         space = font.size(' ')[0]
-        pos = (520,470)
+        pos = (520,450)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:
@@ -324,12 +321,11 @@ def draw_answer4():
                 word_width, word_height = word_surface.get_size()
                 if (temp_x + word_width) > 700:
                     temp_x=pos[0]
-                    temp_y += 30
+                    temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
                 temp_x += (word_width + space)
             temp_x = pos[0]
-            temp_y = temp_y + 30
-        temp_y += 30
+            temp_y = temp_y + 24
 
 def draw_question():
     screen.blit(questionbg,(0,0))
@@ -342,6 +338,34 @@ def draw_question():
     draw_answer2()
     draw_answer3()
     draw_answer4()
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    if mouse_x > 115 and mouse_x < 350 and mouse_y > 255 and mouse_y < 390:
+        click = pygame.mouse.get_pressed()
+        if click[0]:
+            currentroom.Question.isAnswered = True
+            currentroom.Question.isCorrect(currentroom.Question.answer[0])
+            currentroom.locked = False
+    #235
+    if mouse_x > 415 and mouse_x < 750 and mouse_y > 255 and mouse_y < 390:
+        click = pygame.mouse.get_pressed()
+        if click[0]:
+            currentroom.Question.isAnswered = True
+            currentroom.Question.isCorrect(currentroom.Question.answer[1])
+            currentroom.locked = False
+    #135
+    if mouse_x > 115 and mouse_x < 350 and mouse_y > 415 and mouse_y < 550:
+        click = pygame.mouse.get_pressed()
+        if click[0]:
+            currentroom.Question.isAnswered = True
+            currentroom.Question.isCorrect(currentroom.Question.answer[2])
+            currentroom.locked = False
+    
+    if mouse_x > 415 and mouse_x < 750 and mouse_y > 415 and mouse_y < 550:
+        click = pygame.mouse.get_pressed()
+        if click[0]:
+            currentroom.Question.isAnswered = True
+            currentroom.Question.isCorrect(currentroom.Question.answer[3])
+            currentroom.locked = False
     pass
 
 run = True
@@ -522,7 +546,7 @@ while run:
             questionpage = False
             play = True
 
-        elif exit[pygame.K_n]:
+        elif exit[pygame.K_n] or currentroom.Question.isAnswered:
             questionpage = False
             play = True
             currentroom.locked = False
