@@ -168,11 +168,13 @@ class Cave:
                 queue.append(current.right)
 
     def addPowerUp(self):
+        queue = []
+
         current = self.root
         self.__addpowerup(current)
 
     def __addpowerup(self, current):
-        if current.left is None and current.right is None:
+        if current is None:
             return
 
         random1 = random.randint(1,4)

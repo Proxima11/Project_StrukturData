@@ -32,6 +32,8 @@ cave.printRoom()
 cave.addPowerUp()
 # queue untuk power up nantinya
 queue = q.SimpleQueue()
+queue.put(0)
+queue.put(0)
 
 # menu variable 
 menu = True
@@ -139,19 +141,58 @@ def draw_treasure():
 def draw_powerup():
     if currentroom.powerUp:
         if currentroom.powerUptype == 1:
-            screen.blit(powerUptime, (350, 180))
+            screen.blit(powerUptime, (0, 0))
         elif currentroom.powerUptype == 2:
-            screen.blit(powerUproot, (350, 180))
+            screen.blit(powerUproot, (0, 0))
         elif currentroom.powerUptype == 3:
-            screen.blit(powerUplevel, (350, 180))
+            screen.blit(powerUplevel, (0, 0))
         elif currentroom.powerUptype == 4:
-            screen.blit(powerUphint, (350, 180))
+            screen.blit(powerUphint, (0, 0))
 
 def draw_held_powerup():
-    pass
+    powerup1 = queue.get()
+    powerup2 = queue.get()
+
+    if powerup1 == 0:
+        pass
+    elif powerup1 == 1:
+        pass
+    elif powerup1 == 2:
+        pass
+    elif powerup1 == 3:
+        pass
+    elif powerup1 == 4:
+        pass
+
+    if powerup2 == 0:
+        pass
+    elif powerup2 == 1:
+        pass
+    elif powerup2 == 2:
+        pass
+    elif powerup2 == 3:
+        pass
+    elif powerup2 == 4:
+        pass
+
+    queue.put(powerup1)
+    queue.put(powerup2)
 
 def usePowerUp():
-    pass
+    use = queue.get()
+
+    if use == 0:
+        pass
+    elif use == 1:
+        pass
+    elif use == 2:
+        pass
+    elif use == 3:
+        pass
+    elif use == 4:
+        pass
+    
+    queue.put(0)
 
 
 run = True
@@ -207,15 +248,18 @@ while run:
             #gambar ruangan
             draw_room()
 
+            # gambar powerup
+            if not locked:
+                draw_powerup()
+
             # gambar potato
             draw_potato()
 
             # gambar treasure
             draw_treasure()
 
-            # gambar powerup
-            if not locked:
-                draw_powerup()
+           
+            
 
             usePU = pygame.key.get_pressed()
             if usePU[pygame.K_p]:
