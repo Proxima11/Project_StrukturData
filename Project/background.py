@@ -291,7 +291,7 @@ def draw_answer3():
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[2].splitlines()]
         space = font.size(' ')[0]
-        pos = (125,450)
+        pos = (125,460)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:
@@ -312,7 +312,7 @@ def draw_answer4():
         font = pygame.font.SysFont('freesansbold.ttf', 22)
         collection = [word.split('/') for word in currentroom.Question.answer[3].splitlines()]
         space = font.size(' ')[0]
-        pos = (520,450)
+        pos = (520,460)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:
