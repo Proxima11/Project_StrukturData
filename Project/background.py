@@ -207,25 +207,30 @@ def draw_held_powerup():
 def usePowerUp() -> str:
     use = queue.queue[0]
     notification = "a"
+    used = True
     
     if use == 0:
         notification = "tidak ada power up"
     elif use == 1:
-        poweruppopout = ""
+        notification = "waktu ditambahkan"
         pass
     elif use == 2:
         found = cave.poweruproot(currentroom)
         print(found)
         if found:
-            pass
+            notification = "treasure berada di anak gua ini"
         else :
-            pass
+            notification = "treasure tidak berada di anak gua ini"
     elif use == 3:
         level = cave.poweruplevel()
         print(level)
+        notification = "treasure berada pada level - " + str(level)
     elif use == 4:
-        pass
-    if use != 0:
+        if currentroom.Question.count == 2:
+            notification = "treasure tidak dapat digunakan"
+            used = False
+        else : notification = "1 jawaban salah dieliminasi"
+    if use != 0 and used:
         queue.put(0)
         queue.get()
 
@@ -484,8 +489,9 @@ while run:
             if drawtime > 0:
                 drawtime -= cclock
                 if drawtime < 0: drawtime = 0
-                text = my_font.render(powerupoutput, False, (0,0,0))
-                screen.blit(text, (SCREEN_WIDTH/2,50))
+                text = my_font.render(powerupoutput, False, (255,255,255))
+                text_x, text_y = text.get_size()
+                screen.blit(text, ((SCREEN_WIDTH - text_x) / 2 , 20))
 
 
             move = pygame.key.get_pressed()
