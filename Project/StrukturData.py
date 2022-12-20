@@ -222,4 +222,21 @@ class Cave:
     def poweruphint(self):
         pass
 
-            
+    def isAllAnswered(self):
+        queue = []
+        allAnswered = True
+        queue.append(self.root)
+        while len(queue) != 0:
+            current = queue.pop(0)
+            if current.Question.isAnswered == False:
+                allAnswered = False
+                break
+            if current.left is None:
+                return 0
+            else:
+                queue.append(current.left)
+            if current.right is None:
+                return 0
+            else:
+                queue.append(current.right)
+        return allAnswered

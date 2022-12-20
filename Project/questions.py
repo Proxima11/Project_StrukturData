@@ -14,14 +14,19 @@ class NodeQuestion:
         if answer4 != "":
             self.answer.append(answer4)
             self.count+=1
+        self.correct = False
         self.isAnswered = False
         self.random_urutan_jawaban()
     
     def isCorrect(self, user_answer:str):
         if user_answer == self.correct_answer:
-            return True
+            self.correct = True
+            global score
+            score += 100
+            return self.correct
         else:
-            return False
+            self.correct = False
+            return self.correct
     
     def random_urutan_jawaban(self):
         for i in range(len(self.answer)):
@@ -79,7 +84,7 @@ class question:
         self.add_question("Untuk menambahkan item pada posisi paling belakang dalam / queue dilakukan", "Enqueue", "Dequeue", "Push", "Pop")#34
         self.add_question("Banyaknya simpul dari Graph dinamakan", "Order", "Size", "Vertex", "Ruas")#35
         self.add_question("Banyaknya ruas dari Graph dinamakan", "Size", "Ruas", "Vertex", "Order")#36
-        self.add_question("Alur jalan mencetak isi node yang dikunjungi lalu melakukan / kunjungan ke subtree kiri dan selanjutnya ke subtree kanan disebut", "Preorder", "Lastorder", "Postorder", "Inorder")#37
+        self.add_question("Alur jalan mencetak isi node yang dikunjungi lalu melakukan / kunjungan ke subtree kiri dan selanjutnya ke subtree kanan disebut", "Preorder", "Lastorder", "Postorder", "Inorder")#37        
         self.add_question("Berat sebuah pohon biner adalah", "banyaknya daun", "banyaknya simpul", "tinggi left substree-nya", "tinggi right substree-nya")#38
         self.add_question("Struktur data apakah yang digunakan dalam proses hashing / untuk menyimpan informasi dalam waktu berkala", "Hash table", "1D Array", "2D Array", "Linked List")#39
         self.add_question("Hash table T memiliki 25 slot dan menyimpan 2000 element, / load factor α untuk T adalah", "80", "8000", "1.25", "0.0125")#40
