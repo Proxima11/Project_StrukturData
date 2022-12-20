@@ -31,7 +31,23 @@ SCREEN_HEIGHT = 560
 screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 pygame.display.set_caption("Potats Miner")
 
+# basic font for user typed
+base_font = pygame.font.Font(None, 32)
+user_text = ''
+  
+# create rectangle
+input_rect = pygame.Rect(200, 200, 140, 32)
+  
+# color_active stores color(lightskyblue3) which
+# gets active when input box is clicked by user
+color_active = pygame.Color('lightskyblue3')
+  
+# color_passive store color(chartreuse4) which is
+# color of input box.
+color_passive = pygame.Color('chartreuse4')
+color = color_passive
 
+active = False
 
 #Struktur data
 cave = Cave()
@@ -95,6 +111,8 @@ questionstart = 0
 drawtime = 0
 powerupoutput = ""
 addtime = False
+askname = False
+username = ""
 
 # pause
 resume_hover = False
@@ -734,7 +752,7 @@ while run:
 
             if seconds<=0:
                 play=False
-                gameover = True
+                askname = True
 
             # draw notification powerup
             if drawtime > 0 and not paused:
@@ -995,16 +1013,16 @@ while run:
         seconds =  draw_question(seconds)
         if seconds <= 0:
             play=False
-            gameover = True
+            askname = True
             questionpage = False
         seconds-= cclock
         draw_seconds()
         if seconds<=0:
             play=False
-            gameover = True
+            askname = True
         if cave.isAllAnswered():
             play=False
-            gameover = True
+            askname = True
 
         questiontime = int(time.time()-questionstart)
         if exit[pygame.K_ESCAPE] and escapedelay+1.5<time.time():
@@ -1016,17 +1034,55 @@ while run:
             play = True
             currentroom.locked = False
     
+    elif askname:
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if input_rect.collidepoint(event.pos):
+                    active = True
+                else:
+                    active = False
+    
+            if event.type == pygame.KEYDOWN:
+    
+                # Check for backspace
+                if event.key == pygame.K_RETURN:
+                    askname = False
+                    gameover = True
+                    delaypress = time.time()
+                    username = user_text
+                    print(username)
+                if event.key == pygame.K_BACKSPACE:
+                    user_text = user_text[:-1]
+                else:
+                    user_text += event.unicode
+            
+            if active:
+                color = color_active
+            else:
+                color = color_passive
+            
+        pygame.draw.rect(screen, color, input_rect)
+    
+        text_surface = base_font.render(user_text, True, (255, 255, 255))
         
+        screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+        
+        input_rect.w = max(100, text_surface.get_width()+10)
+        
+        pygame.display.flip()
+        clock.tick(60)
+        pass
     elif gameover:
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
         writescore = my_font.render(str(score), True, (255,255,255))
         screen.blit(writescore, (600, 255))
-        if score > high_score:
-            high_score = score
-            with open('score.txt', 'w') as file:
-                file.write(str(high_score))
-        if backtomenu[pygame.K_BACKSPACE]:
+        # if score > high_score:
+        #     high_score = score
+        #     with open('score.txt', 'w') as file:
+        #         file.write(str(high_score))
+        if backtomenu[pygame.K_RETURN] and delaypress+1.5<time.time():
             
             # redraw cave
             cave = Cave()
