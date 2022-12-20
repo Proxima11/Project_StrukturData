@@ -21,8 +21,6 @@ class NodeQuestion:
     def isCorrect(self, user_answer:str):
         if user_answer == self.correct_answer:
             self.correct = True
-            global score
-            score += 100
             return self.correct
         else:
             self.correct = False
