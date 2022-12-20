@@ -775,6 +775,10 @@ while run:
     elif questionpage:
         exit = pygame.key.get_pressed()
         start_ticks =  draw_question(start_ticks)
+        if start_ticks <= 0:
+            play=False
+            gameover = True
+            questionpage = False
         seconds=int((start_ticks+30)-time.time())
         draw_seconds()
         if seconds<=0:
