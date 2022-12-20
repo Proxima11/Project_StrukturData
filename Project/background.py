@@ -31,7 +31,23 @@ SCREEN_HEIGHT = 560
 screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 pygame.display.set_caption("Potats Miner")
 
+# basic font for user typed
+base_font = pygame.font.Font(None, 32)
+user_text = ''
+  
+# create rectangle
+input_rect = pygame.Rect(200, 200, 140, 32)
+  
+# color_active stores color(lightskyblue3) which
+# gets active when input box is clicked by user
+color_active = pygame.Color('lightskyblue3')
+  
+# color_passive store color(chartreuse4) which is
+# color of input box.
+color_passive = pygame.Color('chartreuse4')
+color = color_passive
 
+active = False
 
 #Struktur data
 cave = Cave()
@@ -95,6 +111,8 @@ questionstart = 0
 drawtime = 0
 powerupoutput = ""
 addtime = False
+askname = False
+username = ""
 
 # pause
 resume_hover = False
@@ -192,8 +210,8 @@ def draw_text(text,font,text_col,x,y):
 def draw_panel():
     draw_text('SCORE: ' + str(score),fonts,(225,255,255),120,30)
 
-# def draw_high():
-#     draw_text(str(high_score),fontHI,(255,255,255),355,270)
+def draw_high():
+    draw_text(str(high_score),fontHI,(255,255,255),355,270)
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -220,7 +238,7 @@ def draw_tutorial_confirm():
 
 def draw_tutorial():
     screen.blit(tutorials[currenttutorial], (0,0))
-pass
+
 def highscores():
     screen.blit(highscore_page, (0,0))
     counter = 0
@@ -306,6 +324,7 @@ def draw_highscore():
     screen.blit(highscore_page, (0,0))
     screen.blit(highscore_title, (0,0))
     screen.blit(highscore_back, (0,0))
+<<<<<<< HEAD
     counter = 0
     top5_score = []
     with open('score.txt') as file_score:
@@ -353,6 +372,8 @@ def draw_highscore():
             screen.blit(counter_surface, (590,400))
             screen.blit(nama_surface, (580,420))
             screen.blit(score_surface, (580,440))
+=======
+>>>>>>> a839654bf39ec1784013dc54e7b5e3080357287e
     #draw_high()
     #screen.blit(highscore_back,(0,400))
     
@@ -452,6 +473,7 @@ def draw_question_():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',28)
         collection = [word.split('/') for word in currentroom.Question.question.splitlines()]
+        space = font.size(' ')[0]
         pos = (110,75)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -463,7 +485,7 @@ def draw_question_():
                     temp_x=pos[0]
                     temp_y += 30
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width)
+                temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 30
         temp_y += 30
@@ -473,6 +495,7 @@ def draw_answer1():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[0].splitlines()]
+        space = font.size(' ')[0]
         pos = (125,315)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -484,7 +507,7 @@ def draw_answer1():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width)
+                temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -494,6 +517,7 @@ def draw_answer2():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[1].splitlines()]
+        space = font.size(' ')[0]
         pos = (520,315)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -505,7 +529,7 @@ def draw_answer2():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width)
+                temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -515,6 +539,7 @@ def draw_answer3():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[2].splitlines()]
+        space = font.size(' ')[0]
         pos = (125,460)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -526,7 +551,7 @@ def draw_answer3():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width)
+                temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -536,6 +561,7 @@ def draw_answer4():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf', 22)
         collection = [word.split('/') for word in currentroom.Question.answer[3].splitlines()]
+        space = font.size(' ')[0]
         pos = (520,460)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -547,7 +573,7 @@ def draw_answer4():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width)
+                temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -776,7 +802,7 @@ while run:
 
             if seconds<=0:
                 play=False
-                gameover = True
+                askname = True
 
             # draw notification powerup
             if drawtime > 0 and not paused:
@@ -1037,16 +1063,16 @@ while run:
         seconds =  draw_question(seconds)
         if seconds <= 0:
             play=False
-            gameover = True
+            askname = True
             questionpage = False
         seconds-= cclock
         draw_seconds()
         if seconds<=0:
             play=False
-            gameover = True
+            askname = True
         if cave.isAllAnswered():
             play=False
-            gameover = True
+            askname = True
 
         questiontime = int(time.time()-questionstart)
         if exit[pygame.K_ESCAPE] and escapedelay+1.5<time.time():
@@ -1058,7 +1084,43 @@ while run:
             play = True
             currentroom.locked = False
     
+    elif askname:
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if input_rect.collidepoint(event.pos):
+                    active = True
+                else:
+                    active = False
+    
+            if event.type == pygame.KEYDOWN:
+    
+                # Check for backspace
+                if event.key == pygame.K_RETURN:
+                    askname = False
+                    gameover = True
+                    delaypress = time.time()
+                    username = user_text
+                    print(username)
+                if event.key == pygame.K_BACKSPACE:
+                    user_text = user_text[:-1]
+                else:
+                    user_text += event.unicode
+            
+            if active:
+                color = color_active
+            else:
+                color = color_passive
+            
+        pygame.draw.rect(screen, color, input_rect)
+    
+        text_surface = base_font.render(user_text, True, (255, 255, 255))
         
+        screen.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+        
+        input_rect.w = max(100, text_surface.get_width()+10)
+        
+        pygame.display.flip()
     elif gameover:
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
@@ -1068,7 +1130,7 @@ while run:
         #     high_score = score
         #     with open('score.txt', 'w') as file:
         #         file.write(str(high_score))
-        if backtomenu[pygame.K_RETURN]:
+        if backtomenu[pygame.K_RETURN] and delaypress+1.5<time.time():
             
             # redraw cave
             cave = Cave()
