@@ -118,7 +118,7 @@ choice3 = pygame.image.load("choice3.png").convert_alpha()
 choice4 = pygame.image.load("choice4.png").convert_alpha()
 
 #gameover images
-gameoverbg = pygame.image.load("gameover_score.png").convert_alpha()
+gameover_time = pygame.image.load("GAMEOVER_SCORE.png").convert_alpha()
 
 # movement
 potato_x = 350
@@ -370,7 +370,7 @@ def draw_question(start_ticks):
     screen.blit(choice2,(0,0))
     screen.blit(choice3,(0,0))
     screen.blit(choice4,(0,0))
-    draw_seconds()
+    draw_seconds(start_ticks)
     draw_question_()
     draw_answer1()
     draw_answer2()
@@ -409,14 +409,25 @@ def draw_question(start_ticks):
                 start_ticks -= 5
             currentroom.locked = False
     return start_ticks
-    pass
-def draw_seconds():
-    font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
-    second_surface = font_seconds.render('Time: '+str(seconds), True, (255,255,255), (255,0,0))
-    screen.blit(second_surface,(730,10))
 
-def draw_gameover():
-    screen.blit(gameoverbg, (100,100))
+def draw_seconds(start_ticks):
+    seconds=str(start_ticks-int(pygame.time.get_ticks()/1000))
+    font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
+    second_surface = font_seconds.render(seconds, True, (255,255,255), (255,0,0))
+    screen.blit(second_surface,(790,10))
+    return start_ticks-int(pygame.time.get_ticks()/1000)
+
+def draw_gameover(start_ticks):
+    if start_ticks <= 0:
+        key_gameover = pygame.key.get_pressed()
+        screen.blit(menu_bg,(0,0))
+        screen.blit(gameover_time,(95, 85))
+        if key_gameover[pygame.K_SPACE]:
+            return True
+        
+    if cave.isAllAnswered():
+        if key_gameover[pygame.K_SPACE]:
+            return True
 
 run = True
 
@@ -439,6 +450,8 @@ while run:
                 menu = False
                 start_ticks=time.time()
                 play = True
+                if play == True:
+                    start_ticks=10
         else : hover_play = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
@@ -454,6 +467,7 @@ while run:
         else : hover_exit = False
 
     elif play:
+
         if not change:
 
             # menentukan bentuk ruangan
@@ -504,10 +518,12 @@ while run:
 
             #timer
             seconds=int((start_ticks+30)-time.time()) #kalau mau ganti timer e isa ganti dek +300 itu
-            draw_seconds()
+            draw_seconds(start_ticks)
             if seconds<=0:
                 play=False
                 gameover = True
+            #timer
+            draw_seconds(start_ticks)
 
             if drawtime > 0:
                 drawtime -= cclock
@@ -516,6 +532,11 @@ while run:
                 text_x, text_y = text.get_size()
                 screen.blit(text, ((SCREEN_WIDTH - text_x) / 2 , 20))
 
+            #game over
+            draw_gameover(draw_seconds(start_ticks))
+            if draw_gameover(draw_seconds(start_ticks)):
+                play = False
+                menu = True
 
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom:
@@ -627,10 +648,6 @@ while run:
                 getpower = pygame.key.get_pressed()
                 if getpower[pygame.K_e]:
                     getpowerup()
-        
-        
-        if cave.isAllAnswered():
-            pass
                     
     elif questionpage:
         seconds=int((start_ticks+30)-time.time())
@@ -650,7 +667,7 @@ while run:
             play = True
             currentroom.locked = False
     elif gameover:
-        draw_gameover()
+        draw_gameover(start_ticks)
         backtomenu = pygame.key.get_pressed()
         if backtomenu[pygame.K_SPACE]:
             gameover = False
