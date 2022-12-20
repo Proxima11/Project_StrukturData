@@ -211,8 +211,8 @@ def draw_text(text,font,text_col,x,y):
 def draw_panel():
     draw_text('SCORE: ' + str(score),fonts,(225,255,255),120,30)
 
-def draw_high():
-    draw_text(str(high_score),fontHI,(255,255,255),355,270)
+# def draw_high():
+#     draw_text(str(high_score),fontHI,(255,255,255),355,270)
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -283,7 +283,7 @@ def highscores():
         elif i == 4:
             screen.blit(counter_surface, (429,293))
             screen.blit(nama_surface, (429,323))
-            screen.blit(score_surface, (202,353))
+            screen.blit(score_surface, (429,353))
 
     
 # draw game room
@@ -325,7 +325,6 @@ def draw_highscore():
     screen.blit(highscore_page, (0,0))
     screen.blit(highscore_title, (0,0))
     screen.blit(highscore_back, (0,0))
-<<<<<<< HEAD
     counter = 0
     top5_score = []
     with open('score.txt') as file_score:
@@ -342,14 +341,14 @@ def draw_highscore():
     font = pygame.font.SysFont('freesansbold.ttf',26)
     for i in range(len(top5_score)):
         white = (255,255,255)
-        string = str(top5_score[i])
-        string_surface = font.render(string, True, white)
-        screen.blit(string_surface, (0,0))
-    for i in range(len(top5_score)):
-        white = (255,255,255)
         str_i = str(i+1)
         str_nama = str(top5_score[i][0])
-        str_score = str(top5_score[i][1])
+        str_score = ""
+        temp = str(top5_score[i][1])
+        angka = ["0","1","2","3","4","5","6","7","8","9"]
+        for j in temp:
+            if j in angka:
+                str_score += j
         counter_surface = font.render(str_i, True, white)
         nama_surface = font.render(str_nama, True, white)
         score_surface = font.render(str_score, True, white)
@@ -373,8 +372,6 @@ def draw_highscore():
             screen.blit(counter_surface, (590,400))
             screen.blit(nama_surface, (580,420))
             screen.blit(score_surface, (580,440))
-=======
->>>>>>> a839654bf39ec1784013dc54e7b5e3080357287e
     #draw_high()
     #screen.blit(highscore_back,(0,400))
     
