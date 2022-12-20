@@ -83,16 +83,20 @@ change = False
 start_ticks=0
 startpause = 0
 powerupdelay = 0
-seconds = 0
+seconds = 30000
 isdelay = False
 leftdoor = False
 rightdoor = False
 questionpage = False
 questionstart = 0
 drawtime = 0
-poweruppopout = ""
 powerupoutput = ""
 addtime = False
+
+# pause
+resume_hover = False
+mainmenu_hover = False
+pause_hover = False
 
 # movement
 potato_x = 350
@@ -139,6 +143,15 @@ potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
 treasure = pygame.image.load("treasure.png").convert_alpha()
 
+# paused images
+paused_bg = pygame.image.load("gamepaused.png").convert_alpha()
+resumebutton = pygame.image.load("resumebutton.png").convert_alpha()
+resumehover = pygame.image.load("resumebuttonpressed.png").convert_alpha()
+mainmenubutton = pygame.image.load("mainmenubutton.png").convert_alpha()
+mainmenuhover = pygame.image.load("mainmenubuttonpressed.png").convert_alpha()
+pausebutton = pygame.image.load("pausebutton.png").convert_alpha()
+pausebuttonhover = pygame.image.load("pausebuttonpressed.png").convert_alpha()
+
 # power up images
 powerUptime = pygame.image.load("powerupbonustime.png").convert_alpha()
 powerUproot = pygame.image.load("powerupcheckroot.png").convert_alpha()
@@ -172,7 +185,7 @@ def draw_text(text,font,text_col,x,y):
     screen.blit(img, (x,y))
 
 def draw_panel():
-    draw_text('SCORE: ' + str(score),fonts,(225,255,255),0,0)
+    draw_text('SCORE: ' + str(score),fonts,(225,255,255),120,30)
 
 def draw_high():
     draw_text(str(high_score),fontHI,(255,255,255),355,270)
@@ -288,7 +301,7 @@ def draw_held_powerup():
 
 def usePowerUp() -> str:
     use = queue.queue[0]
-    notification = "a"
+    notification = ""
     used = True
     
     if use == 0:
@@ -507,34 +520,25 @@ def draw_question(start_ticks):
 
 def draw_seconds():
     font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
-    second_surface = font_seconds.render('Time: '+str(seconds), True, (255,255,255), (255,0,0))
+    second_surface = font_seconds.render('Time: '+str(int(seconds / 1000)), True, (255,255,255), (255,0,0))
     screen.blit(second_surface,(730,10))
 
 def draw_gameover():
     screen.blit(menu_bg, (0,0))
     screen.blit(gameoverbg, (100,100))
 
-def pause():
-    paused = True  
+def draw_paused():
+    screen.blit(paused_bg, (0,0))
+    screen.blit(resumebutton, (0,0))
+    screen.blit(mainmenubutton, (0,0))
+    
+    if mainmenu_hover: screen.blit(mainmenuhover, (0,0))
+    if resume_hover: screen.blit(resumehover, (0,0))
 
-    while paused:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+def draw_pausebutton():
+    screen.blit(pausebutton, (0,0))
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
-                    paused = False
-
-                elif event.key == pygame.K_ESCAPE:
-                    pygame.quit()   
-
-        screen.blit(game_pause, (0,0))
-        draw_text('PAUSED',fonts,(225,255,255),380,240)
-        draw_text('Press C to continue or ESC to quit',fonts,(225,255,255),180,300)
-        pygame.display.update()
-        clock.tick(5)    
+    if pause_hover: screen.blit(pausebuttonhover, (0,0))
 
 run = True
 
@@ -645,11 +649,11 @@ while run:
 
             # power up time
             if powerupoutput == "waktu ditambahkan" and addtime:
-                seconds += 10
+                seconds += 10000
                 addtime = False
 
-            # if powerupoutput == "tembok dibuka":
-            #     currentroom.locked = False
+            if powerupoutput == "tembok dibuka":
+                currentroom.locked = False
 
             #gambar ruangan
             draw_room()
@@ -670,24 +674,59 @@ while run:
             draw_panel()
 
             #timer
-            seconds=int((start_ticks+30)-time.time()) #kalau mau ganti timer e isa ganti dek +300 itu
+            if not paused: seconds-=cclock
+            else : seconds = seconds
+
             draw_seconds()
+
             if seconds<=0:
                 play=False
                 gameover = True
 
-            if drawtime > 0:
+            # draw notification powerup
+            if drawtime > 0 and not paused:
                 drawtime -= cclock
                 if drawtime < 0: drawtime = 0
                 text = my_font.render(powerupoutput, False, (255,255,255))
                 text_x, text_y = text.get_size()
                 screen.blit(text, ((SCREEN_WIDTH - text_x) / 2 , 20))
 
+            pausegame = pygame.key.get_pressed()
+            if pausegame[pygame.K_ESCAPE] : paused = True
+            
+            if paused:
+                draw_paused()
+                if event.type == pygame.MOUSEMOTION:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+
+                keyboard = pygame.key.get_pressed()
+                if keyboard[pygame.K_c]: paused = False
+                if keyboard[pygame.K_m]: pass
+
+                if mouse_x>100 and mouse_x<370 and mouse_y > 250 and mouse_y < 380:
+                    resume_hover = True
+                    click = pygame.mouse.get_pressed()
+                    if click[0] : paused = False
+                else: resume_hover = False
+
+                if mouse_x>480 and mouse_x<800 and mouse_y > 250 and mouse_y < 380:
+                    mainmenu_hover = True
+                    click = pygame.mouse.get_pressed()
+                    if click[0] : pass
+                else: mainmenu_hover = False
+            else :
+                draw_pausebutton()
+                if event.type == pygame.MOUSEMOTION:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+
+                    if mouse_x > 10 and mouse_x < 100 and mouse_y > 10 and mouse_y < 80: 
+                        pause_hover = True
+                        click = pygame.mouse.get_pressed()
+                        if click[0] : paused = True
+                    else : pause_hover = False
 
             move = pygame.key.get_pressed()
-            if move[pygame.K_p]:
-                pause()
-            if potato_y >= 450 and currentroom != mainroom:
+            if potato_y >= 450 and currentroom != mainroom and not paused:
                 if move[pygame.K_DOWN]:
                     if potato_x > 300 and potato_x < 500: potato_y+=5
                 if move[pygame.K_LEFT]:
@@ -698,7 +737,7 @@ while run:
                     else : potato_x = potato_x
                 if move[pygame.K_UP]:
                     if potato_x > 300 and potato_x < 500: potato_y-=5
-            if potato_y > 300:
+            elif potato_y > 300 and not paused:
                 if move[pygame.K_LEFT]:
                     if potato_x > 100: potato_x-=5
                     right = False
@@ -712,7 +751,7 @@ while run:
                         potato_y-=5
                 if move[pygame.K_DOWN]:
                     if potato_y < 450: potato_y+=5
-            elif potato_y > 160:
+            elif potato_y > 160 and not paused:
                 if move[pygame.K_LEFT]:
                     if potato_x > 170: potato_x-=5
                     right = False
@@ -724,18 +763,19 @@ while run:
                 if move[pygame.K_DOWN]:
                     if potato_x > 160 and potato_x < 670 : potato_y+=5
             else:
-                if move[pygame.K_LEFT]:
-                    if potato_x > 230: potato_x-=5
-                    right = False
-                if move[pygame.K_RIGHT]:
-                    if potato_x < 550: potato_x+=5
-                    right = True
-                if move[pygame.K_DOWN]:
-                    if potato_x > 220 and potato_x < 550: potato_y+=5
+                if not paused:
+                    if move[pygame.K_LEFT]:
+                        if potato_x > 230: potato_x-=5
+                        right = False
+                    if move[pygame.K_RIGHT]:
+                        if potato_x < 550: potato_x+=5
+                        right = True
+                    if move[pygame.K_DOWN]:
+                        if potato_x > 220 and potato_x < 550: potato_y+=5
 
             # notifikasi
             draw_notification()
-            if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False: 
+            if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False and not paused: 
                 question_notif = True
                 key = pygame.key.get_pressed()
                 if key[pygame.K_e]:
@@ -744,7 +784,6 @@ while run:
                     play = False
                     #currentroom.locked = False
             else : question_notif = False
-
 
         else:
             # 3 detik black screen pas mau ganti room
@@ -803,12 +842,12 @@ while run:
                     
     elif questionpage:
         exit = pygame.key.get_pressed()
-        start_ticks =  draw_question(start_ticks)
-        if start_ticks <= 0:
+        seconds =  draw_question(seconds)
+        if seconds <= 0:
             play=False
             gameover = True
             questionpage = False
-        seconds=int((start_ticks+30)-time.time())
+        seconds-= cclock
         draw_seconds()
         if seconds<=0:
             play=False
