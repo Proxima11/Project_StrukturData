@@ -229,7 +229,7 @@ def usePowerUp() -> str:
         if currentroom.Question.count == 2:
             notification = "treasure tidak dapat digunakan"
             used = False
-        else : notification = "1 jawaban salah dieliminasi"
+        else : notification = "tembok dibuka"
     if use != 0 and used:
         queue.put(0)
         queue.get()
@@ -472,6 +472,9 @@ while run:
             if powerupoutput == "waktu ditambahkan" and addtime:
                 start_ticks += 10
                 addtime = False
+
+            if powerupoutput == "tembok dibuka":
+                currentroom.locked = False
 
             #gambar ruangan
             draw_room()
