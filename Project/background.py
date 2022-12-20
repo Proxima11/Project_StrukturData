@@ -319,7 +319,7 @@ def draw_highscore():
                 top5_score.append(collect_score)
             else:
                 break
-    font = pygame.font.SysFont('freesansbold.ttf',22)
+    font = pygame.font.SysFont('freesansbold.ttf',26)
     for i in range(len(top5_score)):
         white = (255,255,255)
         str_i = str(i+1)
@@ -329,25 +329,25 @@ def draw_highscore():
         nama_surface = font.render(str_nama, True, white)
         score_surface = font.render(str_score, True, white)
         if i == 0:
-            screen.blit(counter_surface, (202,195))
-            screen.blit(nama_surface, (202,225))
-            screen.blit(score_surface, (202,255))
+            screen.blit(counter_surface, (270,260))
+            screen.blit(nama_surface, (265,280))
+            screen.blit(score_surface, (265,300))
         elif i == 1:
-            screen.blit(counter_surface, (423,192))
-            screen.blit(nama_surface, (423,212))
-            screen.blit(score_surface, (202,242))
+            screen.blit(counter_surface, (575,255))
+            screen.blit(nama_surface, (565,275))
+            screen.blit(score_surface, (565,295))
         elif i == 2:
-            screen.blit(counter_surface, (313,249))
-            screen.blit(nama_surface, (313,279))
-            screen.blit(score_surface, (313,309))
+            screen.blit(counter_surface, (425,335))
+            screen.blit(nama_surface, (415,355))
+            screen.blit(score_surface, (415,375))
         elif i == 3:
-            screen.blit(counter_surface, (204,308))
-            screen.blit(nama_surface, (204,338))
-            screen.blit(score_surface, (204,368))
+            screen.blit(counter_surface, (290,410))
+            screen.blit(nama_surface, (280,430))
+            screen.blit(score_surface, (280,450))
         elif i == 4:
-            screen.blit(counter_surface, (429,293))
-            screen.blit(nama_surface, (429,323))
-            screen.blit(score_surface, (202,353))
+            screen.blit(counter_surface, (590,400))
+            screen.blit(nama_surface, (580,420))
+            screen.blit(score_surface, (580,440))
     #draw_high()
     #screen.blit(highscore_back,(0,400))
     
