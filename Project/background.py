@@ -58,6 +58,7 @@ hover_highscore = False
 hover_exit = False
 hover_back = False
 tutorialask = False
+delaypress = 0
 
 # tutorial variable
 tutorial = False
@@ -562,7 +563,7 @@ while run:
                 tutorialask = True 
         else : hover_play = False
 
-        if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350 and not tutorialask:
+        if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350 and not tutorialask and delaypress+1.5<time.time():
             hover_highscore = True
             click = pygame.mouse.get_pressed()
             if click[0]:
@@ -693,7 +694,8 @@ while run:
                 screen.blit(text, ((SCREEN_WIDTH - text_x) / 2 , 200))
 
             pausegame = pygame.key.get_pressed()
-            if pausegame[pygame.K_ESCAPE] and escapedelay+3<time.time(): paused = True
+            if pausegame[pygame.K_ESCAPE] and escapedelay+1.5<time.time(): 
+                paused = True
             
             if paused:
                 draw_paused()
@@ -702,7 +704,56 @@ while run:
 
                 keyboard = pygame.key.get_pressed()
                 if keyboard[pygame.K_c]: paused = False
-                if keyboard[pygame.K_m]: pass
+                if keyboard[pygame.K_m]:
+                    delaypress = time.time() 
+                    # redraw cave
+                    cave = Cave()
+                    for i in range(8):
+                        cave.addRoomCave(i+1)
+                    currentroom = cave.root
+                    mainroom = cave.root
+
+                    #tambah pertanyaan ke tiap ruangan
+                    cave.addQuestion()
+                    cave.printRoom()
+
+                    #tambah powerup
+                    cave.addPowerUp()
+
+                    # refresh queue
+                    queue = q.Queue()
+                    queue.put(0)
+                    queue.put(0)
+
+                    # variable
+                    menu = True
+                    tutorialask = False
+                    tutorial = False
+                    currenttutorial = 0
+                    delay = 0.1
+                    last = 0
+
+                    # game variables
+                    highscore = False
+                    play = False
+                    paused = False
+                    gameover = False
+                    right = True
+                    question_notif = False
+                    loading = False
+                    change = False
+                    start_ticks=0
+                    startpause = 0
+                    powerupdelay = 0
+                    seconds = 300000
+                    isdelay = False
+                    questionstart = 0
+                    drawtime = 0
+                    score = 0
+                    potato_x = 350
+                    potato_y = 450
+                    mouse_x = 0
+                    mouse_y = 0
 
                 if mouse_x>100 and mouse_x<370 and mouse_y > 250 and mouse_y < 380:
                     resume_hover = True
@@ -713,7 +764,54 @@ while run:
                 if mouse_x>480 and mouse_x<800 and mouse_y > 250 and mouse_y < 380:
                     mainmenu_hover = True
                     click = pygame.mouse.get_pressed()
-                    if click[0] : pass
+                    if click[0] : 
+                        cave = Cave()
+                        for i in range(8):
+                            cave.addRoomCave(i+1)
+                        currentroom = cave.root
+                        mainroom = cave.root
+
+                        #tambah pertanyaan ke tiap ruangan
+                        cave.addQuestion()
+                        cave.printRoom()
+
+                        #tambah powerup
+                        cave.addPowerUp()
+
+                        # refresh queue
+                        queue = q.Queue()
+                        queue.put(0)
+                        queue.put(0)
+
+                        # variable
+                        menu = True
+                        tutorialask = False
+                        tutorial = False
+                        currenttutorial = 0
+                        delay = 0.1
+                        last = 0
+
+                        # game variables
+                        highscore = False
+                        play = False
+                        paused = False
+                        gameover = False
+                        right = True
+                        question_notif = False
+                        loading = False
+                        change = False
+                        start_ticks=0
+                        startpause = 0
+                        powerupdelay = 0
+                        seconds = 300000
+                        isdelay = False
+                        questionstart = 0
+                        drawtime = 0
+                        score = 0
+                        potato_x = 350
+                        potato_y = 450
+                        mouse_x = 0
+                        mouse_y = 0
                 else: mainmenu_hover = False
             else :
                 draw_pausebutton()
@@ -858,7 +956,7 @@ while run:
             gameover = True
 
         questiontime = int(time.time()-questionstart)
-        if exit[pygame.K_ESCAPE] and escapedelay+3<time.time():
+        if exit[pygame.K_ESCAPE] and escapedelay+1.5<time.time():
             escapedelay = time.time()
             questionpage = False
             play = True
@@ -876,7 +974,8 @@ while run:
             with open('score.txt', 'w') as file:
                 file.write(str(high_score))
         if backtomenu[pygame.K_SPACE]:
-            #Struktur data
+            
+            # redraw cave
             cave = Cave()
             for i in range(8):
                 cave.addRoomCave(i+1)
@@ -889,23 +988,16 @@ while run:
 
             #tambah powerup
             cave.addPowerUp()
-            # queue untuk power up nantinya
+
+            # refresh queue
             queue = q.Queue()
             queue.put(0)
             queue.put(0)
 
-            # menu variable 
+            # variable
             menu = True
-            hover_play = False
-            hover_highscore = False
-            hover_exit = False
-            hover_back = False
             tutorialask = False
-
-            # tutorial variable
             tutorial = False
-            yes_hover = False
-            no_hover = False
             currenttutorial = 0
             delay = 0.1
             last = 0
@@ -915,30 +1007,18 @@ while run:
             play = False
             paused = False
             gameover = False
-            locked = currentroom.locked
             right = True
             question_notif = False
             loading = False
-            door1 = False
-            door2 = False
-            door3 = False
             change = False
             start_ticks=0
             startpause = 0
             powerupdelay = 0
-            seconds = 0
+            seconds = 300000
             isdelay = False
-            leftdoor = False
-            rightdoor = False
-            questionpage = False
             questionstart = 0
             drawtime = 0
-            poweruppopout = ""
-            powerupoutput = ""
-            addtime = False
             score = 0
-
-            # movement
             potato_x = 350
             potato_y = 450
             mouse_x = 0
