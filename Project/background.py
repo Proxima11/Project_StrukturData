@@ -428,8 +428,9 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]: 
                 menu = False
-                start_ticks=300
                 play = True
+                if play == True:
+                    start_ticks=300
         else : hover_play = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
@@ -469,12 +470,12 @@ while run:
                 addtime = True
 
             # power up time
-            if powerupoutput == "waktu ditambahkan" and addtime:
-                start_ticks += 10
-                addtime = False
+            # if powerupoutput == "waktu ditambahkan" and addtime:
+            #     start_ticks += 10
+            #     addtime = False
 
-            if powerupoutput == "tembok dibuka":
-                currentroom.locked = False
+            # if powerupoutput == "tembok dibuka":
+            #     currentroom.locked = False
 
             #gambar ruangan
             draw_room()
@@ -610,7 +611,12 @@ while run:
                 getpower = pygame.key.get_pressed()
                 if getpower[pygame.K_e]:
                     getpowerup()
-
+        
+        if start_ticks < 0:
+            pass
+        
+        if cave.isAllAnswered():
+            pass
                     
     elif questionpage:
         exit = pygame.key.get_pressed()

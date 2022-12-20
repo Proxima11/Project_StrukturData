@@ -225,7 +225,8 @@ class Cave:
     def isAllAnswered(self):
         queue = []
         allAnswered = True
-        queue.append(self.root)
+        queue.append(self.root.left)
+        queue.append(self.root.right)
         while len(queue) != 0:
             current = queue.pop(0)
             if current.Question.isAnswered == False:
