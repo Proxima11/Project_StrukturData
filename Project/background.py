@@ -14,11 +14,11 @@ clock = pygame.time.Clock()
 FPS = 60
 score = 0
 
-if os.path.exists('score.txt'):
-    with open('score.txt', 'r') as file:
-        high_score = int(file.read())
-else:
-    high_score =0
+# if os.path.exists('score.txt'):
+#     with open('score.txt', 'r') as file:
+#         high_score = int(file.read())
+# else:
+#     high_score =0
 
 fonts = pygame.font.SysFont('Chewy', 50)
 fontHI = pygame.font.SysFont('calibri', 50, True,)
@@ -218,6 +218,52 @@ def draw_tutorial_confirm():
 def draw_tutorial():
     screen.blit(tutorials[currenttutorial], (0,0))
 
+def highscores():
+    screen.blit(highscore_page, (0,0))
+    counter = 0
+    top5_score = []
+    with open('score.txt') as file_score:
+        while True:
+            counter+=1
+            line = file_score.readline()
+            if not line:
+                break
+            elif counter <= 5:
+                collect_score = [scores.split(';') for scores in line]
+                top5_score.append(collect_score)
+            else:
+                break
+    font = pygame.font.SysFont('freesansbold.ttf',22)
+    for i in range(len(top5_score)):
+        white = (255,255,255)
+        str_i = str(i+1)
+        str_nama = str(top5_score[i][0])
+        str_score = str(top5_score[i][1])
+        counter_surface = font.render(str_i, True, white)
+        nama_surface = font.render(str_nama, True, white)
+        score_surface = font.render(str_score, True, white)
+        if i == 0:
+            screen.blit(counter_surface, (202,195))
+            screen.blit(nama_surface, (202,225))
+            screen.blit(score_surface, (202,255))
+        elif i == 1:
+            screen.blit(counter_surface, (423,192))
+            screen.blit(nama_surface, (423,212))
+            screen.blit(score_surface, (202,242))
+        elif i == 2:
+            screen.blit(counter_surface, (313,249))
+            screen.blit(nama_surface, (313,279))
+            screen.blit(score_surface, (313,309))
+        elif i == 3:
+            screen.blit(counter_surface, (204,308))
+            screen.blit(nama_surface, (204,338))
+            screen.blit(score_surface, (204,368))
+        elif i == 4:
+            screen.blit(counter_surface, (429,293))
+            screen.blit(nama_surface, (429,323))
+            screen.blit(score_surface, (202,353))
+
+    
 # draw game room
 def draw_room():
     if locked:
@@ -569,8 +615,10 @@ while run:
             if click[0]:
                 highscore = True
                 if highscore:
-                    draw_highscore()
+                    # draw_highscore()
+                    tutorialask = False
                     menu = False
+                    highscores()
         else : hover_highscore = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450 and not tutorialask:

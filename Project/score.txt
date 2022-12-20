@@ -1,1 +1,5 @@
-300
+lina;300
+budi;500
+kristi;100
+tuti;200
+bagong;400
