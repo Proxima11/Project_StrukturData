@@ -8,7 +8,6 @@ class Room:
         self.Question : NodeQuestion
         self.Question = None
         self.powerUp = False
-        self.powerUptype = 0
         self.level = level
         self.data = None
         self.index = index
@@ -144,8 +143,7 @@ class Cave:
         not_visited = []
         for i in range(len(self.listquest.arr_question)):
             not_visited.append(self.listquest.arr_question[i])
-        queue.append(self.root.left)
-        queue.append(self.root.right)
+        queue.append(self.root)
         current = None
         #bfs
         while len(queue) != 0:
@@ -156,7 +154,7 @@ class Cave:
                     not_visited.append(visited.pop(0))
             #isi dengan pertanyaan
             if current.Question is None:
-                random_index = random.randint(0,len(not_visited)-1)
+                random_index = random.randint(0,len(not_visited))
                 if not_visited[random_index] not in visited:
                     current.Question = not_visited[random_index]
                     visited.append(not_visited[random_index])
@@ -167,59 +165,4 @@ class Cave:
             #append child kanan jika ada
             if current.right is not None:
                 queue.append(current.right)
-
-    def addPowerUp(self):
-
-        current = self.root
-        self.__addpowerup(current)
-
-    def __addpowerup(self, current):
-        if current is None:
-            return
-
-        random1 = random.randint(1,4)
-        random2 = random.randint(1,4)
-        print(random1, random2)
-
-        if random1 == random2:
-            if current != self.root and current.treasure is False:
-                current.powerUp = True
-                randompower = random.randint(1,4)
-                current.powerUptype = randompower
-        
-        self.__addpowerup(current.left)
-        self.__addpowerup(current.right)
-
-    def poweruproot(self, current) -> bool:
-        return self.__checkroot(current)
-
-    def __checkroot(self, current):
-        if current is None:
-            return
-
-        if current.treasure is True:
-            return True
-        
-        self.__checkroot(current.left)
-        self.__checkroot(current.right)
-        return False
-
-    def poweruplevel(self) -> int:
-        current = self.root
-        return self.__searchlevel(current)
-
-    def __searchlevel(self, current):
-        if current is None:
-            return
-
-        if current.treasure is True:
-            return current.level
-        
-        self.__searchlevel(current.left)
-        self.__searchlevel(current.right)
-        return 0
-
-    def poweruphint(self):
-        pass
-
             

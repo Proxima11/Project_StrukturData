@@ -2,15 +2,26 @@ import pygame
 from StrukturData import Cave
 from questions import question
 import time
-import queue as q
-
+import os
 
 pygame.init()
-pygame.font.init()
 
-my_font = pygame.font.SysFont('Comic Sans MS', 30)
 clock = pygame.time.Clock()
 FPS = 60
+
+global score #biar bisa akses question kalo bener dapet 100
+score = 0
+
+#HIGHSCORE FILE
+if os.path.exists('score.txt'):
+    with open('score.txt', 'r') as file:
+        high_score = int(file.read())
+else:
+    high_score =0
+
+fonts = pygame.font.SysFont('Chewy', 50)
+fontHI = pygame.font.SysFont('calibri', 50, True,)
+
 
 SCREEN_WIDTH = 840
 SCREEN_HEIGHT = 560
@@ -30,40 +41,28 @@ mainroom = cave.root
 cave.addQuestion()
 cave.printRoom()
 
-#tambah powerup
-cave.addPowerUp()
-# queue untuk power up nantinya
-queue = q.Queue()
-queue.put(0)
-queue.put(0)
-
 # menu variable 
 menu = True
 hover_play = False
 hover_highscore = False
 hover_exit = False
+hover_back = False
 
 # game variables
+highscore = False
 play = False
 paused = False
 locked = currentroom.locked
 right = True
-question_notif = False
+question = False
 loading = False
 door1 = False
 door2 = False
 door3 = False
 change = False
-start_ticks=0
 startpause = 0
-powerupdelay = 0
-isdelay = False
 leftdoor = False
 rightdoor = False
-questionpage = False
-drawtime = 0
-poweruppopout = ""
-test = 0
 
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
@@ -73,6 +72,9 @@ menu_highscore = pygame.image.load("menuhighscore.png").convert_alpha()
 menu_exit = pygame.image.load("menuexit.png").convert_alpha()
 game_title = pygame.image.load("gametitle.png").convert_alpha()
 menu_potato = pygame.image.load("menupotato.png").convert_alpha()
+highscore_page = pygame.image.load("HIGHSCORE.png").convert_alpha()
+highscore_back =  pygame.image.load("HIGHSCORE_BACK.png").convert_alpha()
+game_over_page = pygame.image.load("GAMEOVER.png").convert_alpha()
 
 # game images
 main_room_double = pygame.image.load("main room double.png").convert_alpha()
@@ -88,36 +90,23 @@ potato_left = pygame.image.load("potatoleft.png").convert_alpha()
 notification = pygame.image.load("notification.png").convert_alpha()
 treasure = pygame.image.load("treasure.png").convert_alpha()
 
-# power up images
-powerUptime = pygame.image.load("powerupbonustime.png").convert_alpha()
-powerUproot = pygame.image.load("powerupcheckroot.png").convert_alpha()
-powerUplevel = pygame.image.load("powerupshowlevel.png").convert_alpha()
-powerUphint = pygame.image.load("powerupquestionhint.png").convert_alpha()
-
-powerup1empty = pygame.image.load("powerup1empty.png").convert_alpha()
-powerup1time = pygame.image.load("powerup1time.png").convert_alpha()
-powerup1root = pygame.image.load("powerup1root.png").convert_alpha()
-powerup1level = pygame.image.load("powerup1level.png").convert_alpha()
-powerup1hint = pygame.image.load("powerup1hint.png").convert_alpha()
-
-powerup2empty = pygame.image.load("powerup2empty.png").convert_alpha()
-powerup2time = pygame.image.load("powerup2time.png").convert_alpha()
-powerup2root = pygame.image.load("powerup2root.png").convert_alpha()
-powerup2level = pygame.image.load("powerup2level.png").convert_alpha()
-powerup2hint = pygame.image.load("powerup2hint.png").convert_alpha()
-
-# question images
-questionbg = pygame.image.load("questionbg.png").convert_alpha()
-choice1 = pygame.image.load("choice1.png").convert_alpha()
-choice2 = pygame.image.load("choice2.png").convert_alpha()
-choice3 = pygame.image.load("choice3.png").convert_alpha()
-choice4 = pygame.image.load("choice4.png").convert_alpha()
-
 # movement
 potato_x = 350
 potato_y = 450
 mouse_x = 0
 mouse_y = 0
+
+
+def draw_text(text,font,text_col,x,y):
+    img = font.render(text,True,text_col)
+    screen.blit(img, (x,y))
+
+def draw_panel():
+    draw_text('SCORE: ' + str(score),fonts,(225,255,255),0,0)
+
+def draw_high():
+    draw_text(str(high_score),fontHI,(255,255,255),355,270)
+
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -158,7 +147,7 @@ def draw_potato():
     else: screen.blit(potato_left, (potato_x, potato_y))
 
 def draw_notification():
-    if question_notif: screen.blit(notification, (350, 250))
+    if question: screen.blit(notification, (350, 250))
     if door1: screen.blit(notification, (250, 30))
     if door2: screen.blit(notification, (350, 20))
     if door3: screen.blit(notification, (550, 15))
@@ -167,17 +156,12 @@ def draw_treasure():
     if currentroom.treasure and not locked:
         screen.blit(treasure, (0,0))
 
-def draw_powerup():
-    if currentroom.powerUp:
-        if currentroom.powerUptype == 1:
-            screen.blit(powerUptime, (0, 0))
-        elif currentroom.powerUptype == 2:
-            screen.blit(powerUproot, (0, 0))
-        elif currentroom.powerUptype == 3:
-            screen.blit(powerUplevel, (0, 0))
-        elif currentroom.powerUptype == 4:
-            screen.blit(powerUphint, (0, 0))
+def draw_highscore():
+    screen.blit(menu_bg, (0,0))
+    draw_high()
+    screen.blit(highscore_page, (100,100))
 
+<<<<<<< HEAD
 def draw_held_powerup():
     powerup1 = queue.queue[0]
     powerup2 = queue.queue[1]
@@ -409,15 +393,22 @@ def draw_seconds():
     font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
     second_surface = font_seconds.render(seconds, True, (255,255,255), (255,0,0))
     screen.blit(second_surface,(790,10))
+=======
+def game_over():
+    screen.blit(menu_bg, (0,0))
+    screen.blit(game_over_page, (100,100))
+>>>>>>> 4720cc57e8f202edc2e22e981d6815226651cda4
 
 run = True
 
+
 #game play
 while run:
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT: run = False
 
-    cclock = clock.tick(FPS)
+    clock.tick(FPS)
     
     if menu:
         draw_menu()
@@ -429,14 +420,17 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]: 
                 menu = False
-                start_ticks=300
                 play = True
         else : hover_play = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
             hover_highscore = True
             click = pygame.mouse.get_pressed()
-            if click[0]: pass
+            if click[0]:
+                highscore = True
+                if highscore:
+                    draw_highscore()
+                    menu = False
         else : hover_highscore = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450:
@@ -445,9 +439,9 @@ while run:
             if click[0]: run = False
         else : hover_exit = False
 
+
     elif play:
         if not change:
-
             # menentukan bentuk ruangan
             if currentroom.left != None:
                 leftdoor = True
@@ -459,23 +453,9 @@ while run:
             # status locked
             locked = currentroom.locked
 
-            # power up
-            usePU = pygame.key.get_pressed()
-            if usePU[pygame.K_p] and powerupdelay+3<time.time(): 
-            #di kasih delay biar gak kepake e cuma 1 dalam 3 detik
-                powerupdelay = time.time()
-                drawtime = 3000
-                powerupoutput = usePowerUp()
-                print(powerupoutput)
-                print(test)
-            else : powerupcooldown()
-
+            
             #gambar ruangan
             draw_room()
-
-            # gambar powerup
-            if not locked:
-                draw_powerup()
 
             # gambar potato
             draw_potato()
@@ -483,6 +463,7 @@ while run:
             # gambar treasure
             draw_treasure()
 
+<<<<<<< HEAD
             # gambar help powerup
             draw_held_powerup()
             
@@ -496,6 +477,8 @@ while run:
                 screen.blit(text, (SCREEN_WIDTH/2,50))
 
 
+=======
+>>>>>>> 4720cc57e8f202edc2e22e981d6815226651cda4
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom:
                 if move[pygame.K_DOWN]:
@@ -546,16 +529,11 @@ while run:
             # notifikasi
             draw_notification()
             if ((potato_x > 250 and potato_x < 500) and (potato_y < 400 and potato_y > 350)) and locked is not False: 
-                question_notif = True
+                question = True
                 key = pygame.key.get_pressed()
                 if key[pygame.K_e]:
-                    questionpage = True
-                    play = False
-                    #currentroom.locked = False
-            else : question_notif = False
-
-            # take powerup
-
+                    currentroom.locked = False
+            else : question = False
 
         else:
             # 3 detik black screen pas mau ganti room
@@ -600,26 +578,30 @@ while run:
             potato_y = 200
             change = True
             currentroom = currentroom.previous
-        
-        #ngambil power up
-        if currentroom.powerUp==True: 
-            if potato_x>330 and potato_x<470 and potato_y<300 and potato_y>160:
-                getpower = pygame.key.get_pressed()
-                if getpower[pygame.K_e]:
-                    getpowerup()
 
+        score+= 1 #dihapus nanti kalo udh ada time
+        draw_panel()
+        #Nanti bagian ini diganti sama time gameover(score dihapus ganti time)
+        if(score > 20):
+            game_over()
+            if score > high_score:
+                high_score = score
+                with open('score.txt', 'w') as file:
+                    file.write(str(high_score))
                     
+<<<<<<< HEAD
     elif questionpage:
         exit = pygame.key.get_pressed()
         start_ticks = draw_question(start_ticks)
         if exit[pygame.K_ESCAPE]:
             questionpage = False
             play = True
+=======
+>>>>>>> 4720cc57e8f202edc2e22e981d6815226651cda4
 
-        elif exit[pygame.K_n] or currentroom.Question.isAnswered:
-            questionpage = False
-            play = True
-            currentroom.locked = False
 
+
+        
     pygame.display.update()
+
 pygame.quit()
