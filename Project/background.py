@@ -46,6 +46,7 @@ hover_exit = False
 # game variables
 play = False
 paused = False
+gameover = False
 locked = currentroom.locked
 right = True
 question_notif = False
@@ -57,12 +58,15 @@ change = False
 start_ticks=0
 startpause = 0
 powerupdelay = 0
+seconds = 0
 isdelay = False
 leftdoor = False
 rightdoor = False
 questionpage = False
+questionstart = 0
 drawtime = 0
 poweruppopout = ""
+powerupoutput = ""
 addtime = False
 
 # menu images
@@ -112,6 +116,9 @@ choice1 = pygame.image.load("choice1.png").convert_alpha()
 choice2 = pygame.image.load("choice2.png").convert_alpha()
 choice3 = pygame.image.load("choice3.png").convert_alpha()
 choice4 = pygame.image.load("choice4.png").convert_alpha()
+
+#gameover images
+gameoverbg = pygame.image.load("gameover_score.png").convert_alpha()
 
 # movement
 potato_x = 350
@@ -404,10 +411,12 @@ def draw_question(start_ticks):
     return start_ticks
     pass
 def draw_seconds():
-    seconds=str(start_ticks-int(pygame.time.get_ticks()/1000))
     font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
-    second_surface = font_seconds.render(seconds, True, (255,255,255), (255,0,0))
-    screen.blit(second_surface,(790,10))
+    second_surface = font_seconds.render('Time: '+str(seconds), True, (255,255,255), (255,0,0))
+    screen.blit(second_surface,(730,10))
+
+def draw_gameover():
+    screen.blit(gameoverbg, (100,100))
 
 run = True
 
@@ -428,9 +437,8 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]: 
                 menu = False
+                start_ticks=time.time()
                 play = True
-                if play == True:
-                    start_ticks=300
         else : hover_play = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
@@ -470,9 +478,9 @@ while run:
                 addtime = True
 
             # power up time
-            # if powerupoutput == "waktu ditambahkan" and addtime:
-            #     start_ticks += 10
-            #     addtime = False
+            if powerupoutput == "waktu ditambahkan" and addtime:
+                seconds += 10
+                addtime = False
 
             # if powerupoutput == "tembok dibuka":
             #     currentroom.locked = False
@@ -493,7 +501,14 @@ while run:
             # gambar help powerup
             draw_held_powerup()
 
+
+            #timer
+            seconds=int((start_ticks+30)-time.time()) #kalau mau ganti timer e isa ganti dek +300 itu
             draw_seconds()
+            if seconds<=0:
+                play=False
+                gameover = True
+
             if drawtime > 0:
                 drawtime -= cclock
                 if drawtime < 0: drawtime = 0
@@ -555,6 +570,7 @@ while run:
                 question_notif = True
                 key = pygame.key.get_pressed()
                 if key[pygame.K_e]:
+                    questionstart = time.time()
                     questionpage = True
                     play = False
                     #currentroom.locked = False
@@ -612,23 +628,34 @@ while run:
                 if getpower[pygame.K_e]:
                     getpowerup()
         
-        if start_ticks < 0:
-            pass
         
         if cave.isAllAnswered():
             pass
                     
     elif questionpage:
+        seconds=int((start_ticks+30)-time.time())
+        draw_seconds()
+        if seconds<=0:
+            play=False
+            gameover = True
+
         exit = pygame.key.get_pressed()
-        start_ticks = draw_question(start_ticks)
+        start_ticks =  draw_question(start_ticks)
+        questiontime = int(time.time()-questionstart)
         if exit[pygame.K_ESCAPE]:
             questionpage = False
             play = True
-
         elif exit[pygame.K_n] or currentroom.Question.isAnswered:
             questionpage = False
             play = True
             currentroom.locked = False
+    elif gameover:
+        draw_gameover()
+        backtomenu = pygame.key.get_pressed()
+        if backtomenu[pygame.K_SPACE]:
+            gameover = False
+            menu= True
+    
 
     pygame.display.update()
 pygame.quit()
