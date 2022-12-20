@@ -377,6 +377,7 @@ def draw_answer1():
                 temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
+        temp_y = temp_y + 24
 
 def draw_answer2():
     if currentroom.Question is not None and not currentroom.Question.isAnswered:
@@ -398,6 +399,7 @@ def draw_answer2():
                 temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
+        temp_y = temp_y + 24
 
 def draw_answer3():
     if currentroom.Question is not None and not currentroom.Question.isAnswered and len(currentroom.Question.answer) > 2:
@@ -419,6 +421,7 @@ def draw_answer3():
                 temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
+        temp_y = temp_y + 24
 
 def draw_answer4():
     if currentroom.Question is not None and not currentroom.Question.isAnswered  and len(currentroom.Question.answer) > 2:
@@ -440,6 +443,7 @@ def draw_answer4():
                 temp_x += (word_width + space)
             temp_x = pos[0]
             temp_y = temp_y + 24
+        temp_y = temp_y + 24
 
 def draw_question(start_ticks):
     global score
@@ -454,6 +458,11 @@ def draw_question(start_ticks):
     draw_answer2()
     draw_answer3()
     draw_answer4()
+    seconds=int((start_ticks+30)-time.time())
+    if seconds<=0:
+        return -9999
+    if cave.isAllAnswered():
+        return -9999
     mouse_x, mouse_y = pygame.mouse.get_pos()
     if mouse_x > 115 and mouse_x < 350 and mouse_y > 255 and mouse_y < 390:
         click = pygame.mouse.get_pressed()
@@ -493,11 +502,9 @@ def draw_question(start_ticks):
                 start_ticks -= 5
             else:
                 score+=100
-            currentroom.locked = False
-            
-                
+            currentroom.locked = False        
     return start_ticks
-    pass
+
 def draw_seconds():
     font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
     second_surface = font_seconds.render('Time: '+str(seconds), True, (255,255,255), (255,0,0))
@@ -766,11 +773,10 @@ while run:
                 if getpower[pygame.K_e]:
                     getpowerup()
         
-        
-        if cave.isAllAnswered():
-            pass
                     
     elif questionpage:
+        exit = pygame.key.get_pressed()
+        start_ticks =  draw_question(start_ticks)
         seconds=int((start_ticks+30)-time.time())
         draw_seconds()
         if seconds<=0:
@@ -780,8 +786,6 @@ while run:
             play=False
             gameover = True
 
-        exit = pygame.key.get_pressed()
-        start_ticks =  draw_question(start_ticks)
         questiontime = int(time.time()-questionstart)
         if exit[pygame.K_ESCAPE]:
             questionpage = False
