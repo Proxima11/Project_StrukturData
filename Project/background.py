@@ -113,6 +113,7 @@ powerupoutput = ""
 addtime = False
 askname = False
 username = ""
+datascoreBOL = True
 
 # pause
 resume_hover = False
@@ -1140,6 +1141,21 @@ while run:
         
         pygame.display.flip()
     elif gameover:
+        if datascoreBOL:
+            with open('datascore.txt', 'a') as file:
+                if  os.path.getsize('datascore.txt') == 0:
+                    file.write(str(score))
+                else:
+                    file.write("\n" + str(score))
+            
+            with open('datascore.txt', 'r') as file:
+                sorted_data=sorted(file.readlines(),key=lambda item: int(item.rsplit('=', 0)[-1].strip()), reverse=True)
+
+            file1 = open('datascore.txt', 'w')
+            file1.writelines(sorted_data)
+            file1.close()
+            datascoreBOL = False
+
         print(username)
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
