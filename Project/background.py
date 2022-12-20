@@ -469,12 +469,12 @@ while run:
                 addtime = True
 
             # power up time
-            if powerupoutput == "waktu ditambahkan" and addtime:
-                start_ticks += 10
-                addtime = False
+            # if powerupoutput == "waktu ditambahkan" and addtime:
+            #     start_ticks += 10
+            #     addtime = False
 
-            if powerupoutput == "tembok dibuka":
-                currentroom.locked = False
+            # if powerupoutput == "tembok dibuka":
+            #     currentroom.locked = False
 
             #gambar ruangan
             draw_room()
@@ -610,7 +610,12 @@ while run:
                 getpower = pygame.key.get_pressed()
                 if getpower[pygame.K_e]:
                     getpowerup()
-
+        
+        if start_ticks < 0:
+            pass
+        
+        if cave.isAllAnswered():
+            pass
                     
     elif questionpage:
         exit = pygame.key.get_pressed()
