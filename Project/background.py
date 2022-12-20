@@ -63,7 +63,7 @@ rightdoor = False
 questionpage = False
 drawtime = 0
 poweruppopout = ""
-test = 0
+addtime = False
 
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
@@ -466,6 +466,12 @@ while run:
                 drawtime = 3000
                 powerupoutput = usePowerUp()
                 print(powerupoutput)
+                addtime = True
+
+            # power up time
+            if powerupoutput == "waktu ditambahkan" and addtime:
+                start_ticks += 10
+                addtime = False
 
             #gambar ruangan
             draw_room()
@@ -549,8 +555,6 @@ while run:
                     play = False
                     #currentroom.locked = False
             else : question_notif = False
-
-            # take powerup
 
 
         else:
