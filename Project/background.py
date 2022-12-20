@@ -250,12 +250,6 @@ def getpowerup():
 
     currentroom.powerUp=False
     currentroom.powerUptype=0
-    
-def drawpowerupresult():
-    pass
-
-def powerupcooldown():
-    pass
 
 def draw_question_():
     if currentroom.Question is not None and not currentroom.Question.isAnswered:
@@ -472,8 +466,6 @@ while run:
                 drawtime = 3000
                 powerupoutput = usePowerUp()
                 print(powerupoutput)
-                print(test)
-            else : powerupcooldown()
 
             #gambar ruangan
             draw_room()
