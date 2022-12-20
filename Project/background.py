@@ -192,8 +192,8 @@ def draw_text(text,font,text_col,x,y):
 def draw_panel():
     draw_text('SCORE: ' + str(score),fonts,(225,255,255),120,30)
 
-def draw_high():
-    draw_text(str(high_score),fontHI,(255,255,255),355,270)
+# def draw_high():
+#     draw_text(str(high_score),fontHI,(255,255,255),355,270)
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -220,7 +220,7 @@ def draw_tutorial_confirm():
 
 def draw_tutorial():
     screen.blit(tutorials[currenttutorial], (0,0))
-
+pass
 def highscores():
     screen.blit(highscore_page, (0,0))
     counter = 0
@@ -306,6 +306,48 @@ def draw_highscore():
     screen.blit(highscore_page, (0,0))
     screen.blit(highscore_title, (0,0))
     screen.blit(highscore_back, (0,0))
+    counter = 0
+    top5_score = []
+    with open('score.txt') as file_score:
+        while True:
+            counter+=1
+            line = file_score.readline()
+            if not line:
+                break
+            elif counter <= 5:
+                collect_score = [scores.split(';') for scores in line]
+                top5_score.append(collect_score)
+            else:
+                break
+    font = pygame.font.SysFont('freesansbold.ttf',22)
+    for i in range(len(top5_score)):
+        white = (255,255,255)
+        str_i = str(i+1)
+        str_nama = str(top5_score[i][0])
+        str_score = str(top5_score[i][1])
+        counter_surface = font.render(str_i, True, white)
+        nama_surface = font.render(str_nama, True, white)
+        score_surface = font.render(str_score, True, white)
+        if i == 0:
+            screen.blit(counter_surface, (202,195))
+            screen.blit(nama_surface, (202,225))
+            screen.blit(score_surface, (202,255))
+        elif i == 1:
+            screen.blit(counter_surface, (423,192))
+            screen.blit(nama_surface, (423,212))
+            screen.blit(score_surface, (202,242))
+        elif i == 2:
+            screen.blit(counter_surface, (313,249))
+            screen.blit(nama_surface, (313,279))
+            screen.blit(score_surface, (313,309))
+        elif i == 3:
+            screen.blit(counter_surface, (204,308))
+            screen.blit(nama_surface, (204,338))
+            screen.blit(score_surface, (204,368))
+        elif i == 4:
+            screen.blit(counter_surface, (429,293))
+            screen.blit(nama_surface, (429,323))
+            screen.blit(score_surface, (202,353))
     #draw_high()
     #screen.blit(highscore_back,(0,400))
     
@@ -405,7 +447,6 @@ def draw_question_():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',28)
         collection = [word.split('/') for word in currentroom.Question.question.splitlines()]
-        space = font.size(' ')[0]
         pos = (110,75)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -417,7 +458,7 @@ def draw_question_():
                     temp_x=pos[0]
                     temp_y += 30
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width + space)
+                temp_x += (word_width)
             temp_x = pos[0]
             temp_y = temp_y + 30
         temp_y += 30
@@ -427,7 +468,6 @@ def draw_answer1():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[0].splitlines()]
-        space = font.size(' ')[0]
         pos = (125,315)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -439,7 +479,7 @@ def draw_answer1():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width + space)
+                temp_x += (word_width)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -449,7 +489,6 @@ def draw_answer2():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[1].splitlines()]
-        space = font.size(' ')[0]
         pos = (520,315)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -461,7 +500,7 @@ def draw_answer2():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width + space)
+                temp_x += (word_width)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -471,7 +510,6 @@ def draw_answer3():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf',22)
         collection = [word.split('/') for word in currentroom.Question.answer[2].splitlines()]
-        space = font.size(' ')[0]
         pos = (125,460)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -483,7 +521,7 @@ def draw_answer3():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width + space)
+                temp_x += (word_width)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -493,7 +531,6 @@ def draw_answer4():
         white = (255, 255, 255)
         font = pygame.font.SysFont('freesansbold.ttf', 22)
         collection = [word.split('/') for word in currentroom.Question.answer[3].splitlines()]
-        space = font.size(' ')[0]
         pos = (520,460)
         temp_x = pos[0]
         temp_y = pos[1]
@@ -505,7 +542,7 @@ def draw_answer4():
                     temp_x=pos[0]
                     temp_y += 24
                 screen.blit(word_surface, (temp_x,temp_y))
-                temp_x += (word_width + space)
+                temp_x += (word_width)
             temp_x = pos[0]
             temp_y = temp_y + 24
         temp_y = temp_y + 24
@@ -1022,11 +1059,11 @@ while run:
         backtomenu = pygame.key.get_pressed()
         writescore = my_font.render(str(score), True, (255,255,255))
         screen.blit(writescore, (600, 255))
-        if score > high_score:
-            high_score = score
-            with open('score.txt', 'w') as file:
-                file.write(str(high_score))
-        if backtomenu[pygame.K_BACKSPACE]:
+        # if score > high_score:
+        #     high_score = score
+        #     with open('score.txt', 'w') as file:
+        #         file.write(str(high_score))
+        if backtomenu[pygame.K_RETURN]:
             
             # redraw cave
             cave = Cave()
