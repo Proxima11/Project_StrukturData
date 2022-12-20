@@ -54,6 +54,7 @@ door1 = False
 door2 = False
 door3 = False
 change = False
+start_ticks=0
 startpause = 0
 powerupdelay = 0
 isdelay = False
@@ -397,6 +398,11 @@ def draw_question():
             currentroom.Question.isCorrect(currentroom.Question.answer[3])
             currentroom.locked = False
     pass
+def draw_seconds():
+    seconds=str(int(start_ticks-(pygame.time.get_ticks()/1000)))
+    font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
+    second_surface = font_seconds.render(seconds, True, (255,255,255), (255,0,0))
+    screen.blit(second_surface,(790,10))
 
 run = True
 
@@ -417,6 +423,7 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]: 
                 menu = False
+                start_ticks=300
                 play = True
         else : hover_play = False
 
@@ -473,6 +480,7 @@ while run:
             # gambar help powerup
             draw_held_powerup()
 
+            draw_seconds()
             if drawtime > 0:
                 drawtime -= cclock
                 if drawtime < 0: drawtime = 0
