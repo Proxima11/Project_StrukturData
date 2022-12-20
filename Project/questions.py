@@ -48,7 +48,7 @@ class question:
     def add_all(self):
         self.add_question("Yang bukan istilah dalam Stack", "Rear", "IsFull", "Pop", "Push")#1
         self.add_question("Yang bukan istilah dalam Queue", "Pop", "Enqueue", "Dequeue", "IsFull")#2
-        self.add_question("Kumpulan dari simpul dan busur disebut", "graph", "stack", "quueue", "linked list")#3
+        self.add_question("Kumpulan dari simpul dan busur disebut", "graph", "stack", "queue", "linked list")#3
         self.add_question("Jika sebuah undirected graph memiliki edge sebagai / berikut: (A,B), (B,C), (C,A), (D,E), (B,D) apakah graph / tersebut membentuk cycle graph?", "ya", "tidak", "", "")#4
         self.add_question("Istilah dalam graph jika ada sebuah edge yang ditulis / e = (v,w) dan w terletak pada e maka hal tersebut disebut", "incident", "outdegree", "degree", "adjacent")#5
         self.add_question("Pada graph tak berarah, dua simpul disebut adjacent / ketika", "ada busur yang menghubungkan / kedua simpul", "ada simpul yang menghubungkan / kedua simpul", "tidak ada busur yang / menghubungkan kedua simpul", "ada busur dan simpul / yang menghubungkan kedua / simpul")#6
@@ -64,7 +64,7 @@ class question:
         self.add_question("Beikut ini adalah istilah umum dalam tree, kecuali", "Weight", "Level", "Leaf", "Root")#16
         self.add_question("Node yang mempunyai level sama pada tree disebut", "Sibling", "Parent", "Child", "Line")#17
         self.add_question("Tree yang pada tiap node nya memiliki 2 cabang saja disebut", "binary tree", "normal tree", "not tree", "graph tree")#18
-        self.add_question("Simpul yang tidak mempunyai subordinat atau simpul yang / derajat masuknya = 1 dan keluarnya = 0 adalah", "Leaf", "Root", "Child", "Child")#19
+        self.add_question("Simpul yang tidak mempunyai subordinat atau simpul yang / derajat masuknya = 1 dan keluarnya = 0 adalah", "Leaf", "Root", "Child", "Parent")#19
         self.add_question("Node yang berada di bawah node tertentu disebut juga dengan", "Successor", "Prodecessor", " Ancestor", "Descendant")#20
         self.add_question("Suatu kelompok data yang dapat dikarakteristikan oleh / organisasi serta operasi adalah", "Struktur data", "Kolom data", "Pengaturan data", "Tipe data")#21
         self.add_question("Struktur data standar yang digunakan dibawah ini adalah, kecuali", "Stuck", "Graph", "Queue", "Tree")#22
