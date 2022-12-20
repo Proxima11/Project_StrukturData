@@ -710,6 +710,8 @@ while run:
             questionpage = False
             play = True
             currentroom.locked = False
+    
+    draw_panel()
     elif gameover:
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
@@ -720,7 +722,7 @@ while run:
         if backtomenu[pygame.K_SPACE]:
             gameover = False
             menu= True
-    
+
 
     pygame.display.update()
 pygame.quit()
