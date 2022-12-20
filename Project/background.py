@@ -32,19 +32,19 @@ screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 pygame.display.set_caption("Potats Miner")
 
 # basic font for user typed
-base_font = pygame.font.Font(None, 32)
+base_font = pygame.font.Font(None, 60)
 user_text = ''
   
 # create rectangle
-input_rect = pygame.Rect(200, 200, 140, 32)
+input_rect = pygame.Rect(300, 250, 400, 90)
   
 # color_active stores color(lightskyblue3) which
 # gets active when input box is clicked by user
-color_active = pygame.Color('lightskyblue3')
+color_active = pygame.Color(95, 64, 18)
   
 # color_passive store color(chartreuse4) which is
 # color of input box.
-color_passive = pygame.Color('chartreuse4')
+color_passive = pygame.Color(167,111,28)
 color = color_passive
 
 active = False
@@ -199,6 +199,7 @@ choice3 = pygame.image.load("choice3.png").convert_alpha()
 choice4 = pygame.image.load("choice4.png").convert_alpha()
 
 #gameover images
+asknamebg = pygame.image.load("nameinput.png").convert_alpha()
 gameoverbg = pygame.image.load("gameover_score.png").convert_alpha()
 gameoverpage = pygame.image.load("gameoverpage.png").convert_alpha()
 treasurefoundpage = pygame.image.load("treasurefoundpage.png").convert_alpha()
@@ -594,6 +595,9 @@ def draw_seconds():
     second_surface = font_seconds.render('Time: '+str(int(seconds / 1000)), True, (255,255,255), (255,0,0))
     screen.blit(second_surface,(730,10))
 
+def draw_askname():
+    screen.blit(asknamebg, (0,0))
+
 def draw_gameover():
     if treasurefound : screen.blit(treasurefound, (0,0))
     else : screen.blit(gameoverpage, (0,0))
@@ -697,6 +701,8 @@ while run:
     elif play:
         if not change:
 
+            skip = pygame.key.get_pressed()
+            if skip[pygame.K_s]: seconds = 10
             # menentukan bentuk ruangan
             if currentroom.left != None:
                 leftdoor = True
@@ -1035,8 +1041,10 @@ while run:
             currentroom.locked = False
     
     elif askname:
-
+        draw_askname()
         for event in pygame.event.get():
+            if event.type == pygame.QUIT: run = False
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if input_rect.collidepoint(event.pos):
                     active = True
@@ -1054,7 +1062,7 @@ while run:
                     print(username)
                 if event.key == pygame.K_BACKSPACE:
                     user_text = user_text[:-1]
-                else:
+                elif len(user_text) <= 11:
                     user_text += event.unicode
             
             if active:
@@ -1072,6 +1080,7 @@ while run:
         
         pygame.display.flip()
     elif gameover:
+        print(username)
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
         writescore = my_font.render(str(score), True, (255,255,255))
