@@ -315,11 +315,16 @@ def draw_highscore():
             if not line:
                 break
             elif counter <= 5:
-                collect_score = [scores.split(';') for scores in line]
+                collect_score = line.split(';')
                 top5_score.append(collect_score)
             else:
                 break
     font = pygame.font.SysFont('freesansbold.ttf',26)
+    for i in range(len(top5_score)):
+        white = (255,255,255)
+        string = str(top5_score[i])
+        string_surface = font.render(string, True, white)
+        screen.blit(string_surface, (0,0))
     for i in range(len(top5_score)):
         white = (255,255,255)
         str_i = str(i+1)
