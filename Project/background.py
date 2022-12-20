@@ -57,6 +57,15 @@ hover_play = False
 hover_highscore = False
 hover_exit = False
 hover_back = False
+tutorialask = False
+
+# tutorial variable
+tutorial = False
+yes_hover = False
+no_hover = False
+currenttutorial = 0
+delay = 0.1
+last = 0
 
 # game variables
 highscore = False
@@ -85,6 +94,12 @@ poweruppopout = ""
 powerupoutput = ""
 addtime = False
 
+# movement
+potato_x = 350
+potato_y = 450
+mouse_x = 0
+mouse_y = 0
+
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
 menu_blank = pygame.image.load("menublank.png").convert_alpha()
@@ -96,6 +111,18 @@ menu_potato = pygame.image.load("menupotato.png").convert_alpha()
 highscore_page = pygame.image.load("highscorepage.png").convert_alpha()
 highscore_back =  pygame.image.load("backbutton.png").convert_alpha()
 game_over_page = pygame.image.load("highscoretitle.png").convert_alpha()
+
+#tutorial images
+tutorial_confirm = pygame.image.load("tutorialconfirm.png").convert_alpha()
+tutorial_yes = pygame.image.load("yesbutton.png").convert_alpha()
+tutorial_no = pygame.image.load("nobutton.png").convert_alpha()
+tutorial_yes_pressed = pygame.image.load("yespressed.png").convert_alpha()
+tutorial_no_pressed = pygame.image.load("nopressed.png").convert_alpha()
+
+tutorials = []
+for i in range (0,13):
+    tutorial = pygame.image.load(f"tutorial{i}.png").convert_alpha()
+    tutorials.append(tutorial)
 
 # game images
 main_room_double = pygame.image.load("main room double.png").convert_alpha()
@@ -139,11 +166,6 @@ choice4 = pygame.image.load("choice4.png").convert_alpha()
 #gameover images
 gameoverbg = pygame.image.load("gameover_score.png").convert_alpha()
 
-# movement
-potato_x = 350
-potato_y = 450
-mouse_x = 0
-mouse_y = 0
 
 def draw_text(text,font,text_col,x,y):
     img = font.render(text,True,text_col)
@@ -168,6 +190,19 @@ def draw_menu():
     elif hover_exit:
         screen.blit(menu_exit, (0,0))
     else : screen.blit(menu_blank, (0,0))
+
+def draw_tutorial_confirm():
+    screen.blit(tutorial_confirm, (0,0))
+    screen.blit(tutorial_yes, (0,0))
+    screen.blit(tutorial_no, (0,0))
+
+    if yes_hover:
+        screen.blit(tutorial_yes_pressed, (0,0))
+    elif no_hover:
+        screen.blit(tutorial_no_pressed, (0,0))
+
+def draw_tutorial():
+    screen.blit(tutorials[currenttutorial], (0,0))
 
 # draw game room
 def draw_room():
@@ -486,16 +521,14 @@ while run:
         if event.type == pygame.MOUSEMOTION:
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        if mouse_x>520 and mouse_x<680 and mouse_y > 200 and mouse_y < 280:
+        if mouse_x>520 and mouse_x<680 and mouse_y > 200 and mouse_y < 280 and not tutorialask:
             hover_play = True
             click = pygame.mouse.get_pressed()
-            if click[0]: 
-                menu = False
-                start_ticks=time.time()
-                play = True
+            if click[0]:
+                tutorialask = True 
         else : hover_play = False
 
-        if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
+        if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350 and not tutorialask:
             hover_highscore = True
             click = pygame.mouse.get_pressed()
             if click[0]:
@@ -505,11 +538,57 @@ while run:
                     menu = False
         else : hover_highscore = False
 
-        if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450:
+        if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450 and not tutorialask:
             hover_exit = True
             click = pygame.mouse.get_pressed()
             if click[0]: run = False
         else : hover_exit = False
+
+        if tutorialask:
+            draw_tutorial_confirm()
+            if mouse_x>170 and mouse_x<370 and mouse_y > 250 and mouse_y < 380:
+                yes_hover = True
+                click = pygame.mouse.get_pressed()
+                if click[0] : 
+                    menu = False
+                    tutorialask = False
+                    tutorial = True
+            else: yes_hover = False
+
+            if mouse_x>430 and mouse_x<630 and mouse_y > 250 and mouse_y < 380:
+                no_hover = True
+                click = pygame.mouse.get_pressed()
+                if click[0] : 
+                    menu = False
+                    tutorialask = False
+                    tutorial = False
+                    start_ticks=time.time()
+                    play = True
+            else: no_hover = False
+
+    elif tutorial:
+        
+        now = time.time()
+        draw_tutorial()
+        nextprev = pygame.key.get_pressed()
+
+        if nextprev[pygame.K_LEFT] and ((now-last) > delay):
+            currenttutorial -= 1
+            last = now
+            if currenttutorial < 0: currenttutorial = 0
+        if nextprev[pygame.K_RIGHT] and ((now-last) > delay):
+            currenttutorial += 1
+            last = now
+            if currenttutorial > 12: currenttutorial = 12
+        
+        if nextprev[pygame.K_RETURN] and currenttutorial == 12:
+            tutorial = False
+            currenttutorial = 0
+            start_ticks=time.time()
+            play = True
+    
+    elif highscore:
+        pass
 
     elif play:
         if not change:
