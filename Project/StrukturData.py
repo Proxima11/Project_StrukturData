@@ -82,7 +82,7 @@ class Cave:
         queue = []
         queue.append(self.root)
         current = None
-        index = random.randint(0,self.size-1)
+        index = random.randint(31,self.size-1)
         count = 0
         while len(queue) != 0:
             current = queue.pop(0)
@@ -104,30 +104,14 @@ class Cave:
     def printRoom(self):
         queue = []
         queue.append(self.root)
-        print('index  :  ', end='')
+        print('room  :  ')
         while len(queue) !=0:
             current = queue.pop(0)
-            print(current.index ,end = " ")
-    
-            # Enqueue left child
-            if current.left is not None:
-                queue.append(current.left)
-    
-            # Enqueue right child
-            if current.right is not None:
-                queue.append(current.right)
-        print()
-
-        queue = []
-        queue.append(self.root)
-        print('parrent: ', end='')
-        while len(queue) !=0:
-            current = queue.pop(0)
-            if current.previous !=None:
-                print(current.previous.index ,end = " ")
+            print(current.index ,end = "  ->  ")
+            if current.previous is None:
+                print(-1)
             else:
-                print('-1', end=" ")
-            
+                print(current.previous.index)
     
             # Enqueue left child
             if current.left is not None:
@@ -136,7 +120,7 @@ class Cave:
             # Enqueue right child
             if current.right is not None:
                 queue.append(current.right)
-        print()
+
 
     def addQuestion(self):
         queue = []
@@ -179,7 +163,6 @@ class Cave:
 
         random1 = random.randint(1,4)
         random2 = random.randint(1,4)
-        print(random1, random2)
 
         if random1 == random2:
             if current != self.root and current.treasure is False:

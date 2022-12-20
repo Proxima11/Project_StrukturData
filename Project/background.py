@@ -51,7 +51,7 @@ active = False
 
 #Struktur data
 cave = Cave()
-for i in range(8):
+for i in range(40):
     cave.addRoomCave(i+1)
 currentroom = cave.root
 mainroom = cave.root
@@ -59,6 +59,11 @@ mainroom = cave.root
 #tambah pertanyaan ke tiap ruangan
 cave.addQuestion()
 cave.printRoom()
+cave.addTreasure()
+cave.addTreasure()
+cave.addTreasure()
+cave.addTreasure()
+cave.addTreasure()
 
 #tambah powerup
 cave.addPowerUp()
@@ -102,7 +107,7 @@ start_ticks=0
 startpause = 0
 powerupdelay = 0
 escapedelay = 0
-seconds = 30000
+seconds = 300000
 isdelay = False
 leftdoor = False
 rightdoor = False
@@ -786,17 +791,29 @@ while run:
             # gambar powerup
             if not locked:
                 draw_powerup()
-
-            # gambar potato
-            draw_potato()
-
+            
             # gambar treasure
             draw_treasure()
+            
+            # gambar potato
+            draw_potato()
 
             # gambar help powerup
             draw_held_powerup()
 
             draw_panel()
+
+            if currentroom.treasure:
+                if potato_x>300 and potato_x<420 and potato_y<300:
+                    gettreasure = pygame.key.get_pressed()
+                    font_notif = pygame.font.SysFont('freesansbold.ttf',32)
+                    notif_surface = font_notif.render('Press space to take the treasure', True, (255,255,255), (0,0,0))
+                    screen.blit(notif_surface, (SCREEN_WIDTH // 2-150 , 220))
+                    if gettreasure[pygame.K_SPACE]:
+                        currentroom.treasure = False
+                        score += 1000
+
+
 
             #timer
             if not paused: seconds-=cclock
@@ -839,6 +856,13 @@ while run:
                     #tambah pertanyaan ke tiap ruangan
                     cave.addQuestion()
                     cave.printRoom()
+
+                    #bikin 5 treasure
+                    cave.addTreasure()
+                    cave.addTreasure()
+                    cave.addTreasure()
+                    cave.addTreasure()
+                    cave.addTreasure()
 
                     #tambah powerup
                     cave.addPowerUp()
@@ -897,6 +921,13 @@ while run:
                         #tambah pertanyaan ke tiap ruangan
                         cave.addQuestion()
                         cave.printRoom()
+
+                        #bikin 5 treasure
+                        cave.addTreasure()
+                        cave.addTreasure()
+                        cave.addTreasure()
+                        cave.addTreasure()
+                        cave.addTreasure()
 
                         #tambah powerup
                         cave.addPowerUp()
@@ -1149,6 +1180,15 @@ while run:
             #tambah pertanyaan ke tiap ruangan
             cave.addQuestion()
             cave.printRoom()
+
+            #bikin 5 treasure
+            cave.addTreasure()
+            cave.addTreasure()
+            cave.addTreasure()
+            cave.addTreasure()
+            cave.addTreasure()
+
+            
 
             #tambah powerup
             cave.addPowerUp()
