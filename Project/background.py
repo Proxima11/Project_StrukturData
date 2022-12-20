@@ -358,7 +358,7 @@ def draw_answer4():
             temp_x = pos[0]
             temp_y = temp_y + 24
 
-def draw_question():
+def draw_question(start_ticks):
     screen.blit(questionbg,(0,0))
     screen.blit(choice1,(0,0))
     screen.blit(choice2,(0,0))
@@ -369,34 +369,40 @@ def draw_question():
     draw_answer2()
     draw_answer3()
     draw_answer4()
+    draw_seconds()
     mouse_x, mouse_y = pygame.mouse.get_pos()
     if mouse_x > 115 and mouse_x < 350 and mouse_y > 255 and mouse_y < 390:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[0])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[0]):
+                start_ticks -= 5
             currentroom.locked = False
     #235
     if mouse_x > 415 and mouse_x < 750 and mouse_y > 255 and mouse_y < 390:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[1])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[1]):
+                start_ticks -= 5
             currentroom.locked = False
     #135
     if mouse_x > 115 and mouse_x < 350 and mouse_y > 415 and mouse_y < 550:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[2])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[2]):
+                start_ticks -= 5
             currentroom.locked = False
     
     if mouse_x > 415 and mouse_x < 750 and mouse_y > 415 and mouse_y < 550:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[3])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[3]):
+                start_ticks -= 5
             currentroom.locked = False
+    return start_ticks
     pass
 def draw_seconds():
     seconds=str(int(start_ticks-(pygame.time.get_ticks()/1000)))
@@ -479,8 +485,10 @@ while run:
 
             # gambar help powerup
             draw_held_powerup()
-
+            
+            #draw timer
             draw_seconds()
+
             if drawtime > 0:
                 drawtime -= cclock
                 if drawtime < 0: drawtime = 0
@@ -603,7 +611,7 @@ while run:
                     
     elif questionpage:
         exit = pygame.key.get_pressed()
-        draw_question()
+        start_ticks = draw_question(start_ticks)
         if exit[pygame.K_ESCAPE]:
             questionpage = False
             play = True
