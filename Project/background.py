@@ -559,6 +559,7 @@ while run:
             # gambar help powerup
             draw_held_powerup()
 
+            draw_panel()
 
             #timer
             seconds=int((start_ticks+30)-time.time()) #kalau mau ganti timer e isa ganti dek +300 itu
@@ -711,7 +712,7 @@ while run:
             play = True
             currentroom.locked = False
     
-    draw_panel()
+        
     elif gameover:
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
