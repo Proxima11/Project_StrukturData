@@ -1071,8 +1071,6 @@ while run:
         input_rect.w = max(100, text_surface.get_width()+10)
         
         pygame.display.flip()
-        clock.tick(60)
-        pass
     elif gameover:
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
