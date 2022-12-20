@@ -258,7 +258,7 @@ def draw_question_():
         font = pygame.font.SysFont('freesansbold.ttf',28)
         collection = [word.split('/') for word in currentroom.Question.question.splitlines()]
         space = font.size(' ')[0]
-        pos = (115,75)
+        pos = (110,75)
         temp_x = pos[0]
         temp_y = pos[1]
         for lines in collection:
@@ -358,12 +358,13 @@ def draw_answer4():
             temp_x = pos[0]
             temp_y = temp_y + 24
 
-def draw_question():
+def draw_question(start_ticks):
     screen.blit(questionbg,(0,0))
     screen.blit(choice1,(0,0))
     screen.blit(choice2,(0,0))
     screen.blit(choice3,(0,0))
     screen.blit(choice4,(0,0))
+    draw_seconds()
     draw_question_()
     draw_answer1()
     draw_answer2()
@@ -374,32 +375,37 @@ def draw_question():
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[0])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[0]):
+                start_ticks -= 5
             currentroom.locked = False
     #235
     if mouse_x > 415 and mouse_x < 750 and mouse_y > 255 and mouse_y < 390:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[1])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[1]):
+                start_ticks -= 5
             currentroom.locked = False
     #135
     if mouse_x > 115 and mouse_x < 350 and mouse_y > 415 and mouse_y < 550:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[2])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[2]):
+                start_ticks -= 5
             currentroom.locked = False
     
     if mouse_x > 415 and mouse_x < 750 and mouse_y > 415 and mouse_y < 550:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
-            currentroom.Question.isCorrect(currentroom.Question.answer[3])
+            if not currentroom.Question.isCorrect(currentroom.Question.answer[3]):
+                start_ticks -= 5
             currentroom.locked = False
+    return start_ticks
     pass
 def draw_seconds():
-    seconds=str(int(start_ticks-(pygame.time.get_ticks()/1000)))
+    seconds=str(start_ticks-int(pygame.time.get_ticks()/1000))
     font_seconds = pygame.font.SysFont('freesansbold.ttf',32)
     second_surface = font_seconds.render(seconds, True, (255,255,255), (255,0,0))
     screen.blit(second_surface,(790,10))
@@ -603,7 +609,7 @@ while run:
                     
     elif questionpage:
         exit = pygame.key.get_pressed()
-        draw_question()
+        start_ticks = draw_question(start_ticks)
         if exit[pygame.K_ESCAPE]:
             questionpage = False
             play = True
