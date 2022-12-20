@@ -405,7 +405,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: run = False
 
-    clock.tick(FPS)
+    cclock = clock.tick(FPS)
     
     if menu:
         draw_menu()
@@ -474,8 +474,7 @@ while run:
             draw_held_powerup()
 
             if drawtime > 0:
-                passed = clock.tick(60)
-                drawtime -= passed
+                drawtime -= cclock
                 if drawtime < 0: drawtime = 0
                 text = my_font.render(powerupoutput, False, (0,0,0))
                 screen.blit(text, (SCREEN_WIDTH/2,50))
