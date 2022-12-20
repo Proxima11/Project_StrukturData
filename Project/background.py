@@ -111,6 +111,7 @@ menu_potato = pygame.image.load("menupotato.png").convert_alpha()
 highscore_page = pygame.image.load("highscorepage.png").convert_alpha()
 highscore_back =  pygame.image.load("backbutton.png").convert_alpha()
 game_over_page = pygame.image.load("highscoretitle.png").convert_alpha()
+game_pause = pygame.image.load("cave bg.jpg").convert_alpha()
 
 #tutorial images
 tutorial_confirm = pygame.image.load("tutorialconfirm.png").convert_alpha()
@@ -507,6 +508,28 @@ def draw_gameover():
     screen.blit(menu_bg, (0,0))
     screen.blit(gameoverbg, (100,100))
 
+def pause():
+    paused = True  
+
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    paused = False
+
+                elif event.key == pygame.K_ESCAPE:
+                    pygame.quit()   
+
+        screen.blit(game_pause, (0,0))
+        draw_text('PAUSED',fonts,(225,255,255),380,240)
+        draw_text('Press C to continue or ESC to quit',fonts,(225,255,255),180,300)
+        pygame.display.update()
+        clock.tick(5)    
+
 run = True
 
 #game play
@@ -656,6 +679,8 @@ while run:
 
 
             move = pygame.key.get_pressed()
+            if move[pygame.K_p]:
+                pause()
             if potato_y >= 450 and currentroom != mainroom:
                 if move[pygame.K_DOWN]:
                     if potato_x > 300 and potato_x < 500: potato_y+=5
