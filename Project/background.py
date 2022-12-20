@@ -325,7 +325,7 @@ def draw_highscore():
     screen.blit(highscore_page, (0,0))
     screen.blit(highscore_title, (0,0))
     screen.blit(highscore_back, (0,0))
-<<<<<<< HEAD
+
     counter = 0
     top5_score = []
     with open('score.txt') as file_score:
@@ -373,8 +373,6 @@ def draw_highscore():
             screen.blit(counter_surface, (590,400))
             screen.blit(nama_surface, (580,420))
             screen.blit(score_surface, (580,440))
-=======
->>>>>>> a839654bf39ec1784013dc54e7b5e3080357287e
     #draw_high()
     #screen.blit(highscore_back,(0,400))
     
@@ -943,11 +941,11 @@ while run:
                 if event.type == pygame.MOUSEMOTION:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
 
-                    if mouse_x > 10 and mouse_x < 100 and mouse_y > 10 and mouse_y < 80: 
-                        pause_hover = True
-                        click = pygame.mouse.get_pressed()
-                        if click[0] : paused = True
-                    else : pause_hover = False
+                if mouse_x > 10 and mouse_x < 100 and mouse_y > 10 and mouse_y < 80: 
+                    pause_hover = True
+                    click = pygame.mouse.get_pressed()
+                    if click[0] : paused = True
+                else : pause_hover = False
 
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom and not paused:
