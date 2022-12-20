@@ -69,6 +69,7 @@ delay = 0.1
 last = 0
 
 # game variables
+treasurefound = False
 highscore = False
 play = False
 paused = False
@@ -181,6 +182,8 @@ choice4 = pygame.image.load("choice4.png").convert_alpha()
 
 #gameover images
 gameoverbg = pygame.image.load("gameover_score.png").convert_alpha()
+gameoverpage = pygame.image.load("gameoverpage.png").convert_alpha()
+treasurefoundpage = pygame.image.load("treasurefoundpage.png").convert_alpha()
 
 def draw_text(text,font,text_col,x,y):
     img = font.render(text,True,text_col)
@@ -526,8 +529,8 @@ def draw_seconds():
     screen.blit(second_surface,(730,10))
 
 def draw_gameover():
-    screen.blit(menu_bg, (0,0))
-    screen.blit(gameoverbg, (100,100))
+    if treasurefound : screen.blit(treasurefound, (0,0))
+    else : screen.blit(gameoverpage, (0,0))
 
 def draw_paused():
     screen.blit(paused_bg, (0,0))
@@ -969,11 +972,13 @@ while run:
     elif gameover:
         draw_gameover()
         backtomenu = pygame.key.get_pressed()
+        writescore = my_font.render(str(score), True, (255,255,255))
+        screen.blit(writescore, (600, 255))
         if score > high_score:
             high_score = score
             with open('score.txt', 'w') as file:
                 file.write(str(high_score))
-        if backtomenu[pygame.K_SPACE]:
+        if backtomenu[pygame.K_BACKSPACE]:
             
             # redraw cave
             cave = Cave()
