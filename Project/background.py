@@ -140,6 +140,7 @@ game_title = pygame.image.load("gametitle.png").convert_alpha()
 menu_potato = pygame.image.load("menupotato.png").convert_alpha()
 highscore_page = pygame.image.load("highscorepage.png").convert_alpha()
 highscore_back =  pygame.image.load("backbutton.png").convert_alpha()
+highscore_backhover = pygame.image.load("backbuttonpressed.png").convert_alpha()
 highscore_title = pygame.image.load("highscoretitle.png").convert_alpha()
 game_pause = pygame.image.load("cave bg.jpg").convert_alpha()
 
@@ -216,8 +217,8 @@ def draw_text(text,font,text_col,x,y):
 def draw_panel():
     draw_text('SCORE: ' + str(score),fonts,(225,255,255),120,30)
 
-def draw_high():
-    draw_text(str(high_score),fontHI,(255,255,255),355,270)
+# def draw_high():
+#     draw_text(str(high_score),fontHI,(255,255,255),355,270)
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -288,7 +289,7 @@ def highscores():
         elif i == 4:
             screen.blit(counter_surface, (429,293))
             screen.blit(nama_surface, (429,323))
-            screen.blit(score_surface, (202,353))
+            screen.blit(score_surface, (429,353))
 
     
 # draw game room
@@ -330,6 +331,7 @@ def draw_highscore():
     screen.blit(highscore_page, (0,0))
     screen.blit(highscore_title, (0,0))
     screen.blit(highscore_back, (0,0))
+    if hover_back: screen.blit(highscore_backhover, (0,0))
 
     counter = 0
     top5_score = []
@@ -347,14 +349,14 @@ def draw_highscore():
     font = pygame.font.SysFont('freesansbold.ttf',26)
     for i in range(len(top5_score)):
         white = (255,255,255)
-        string = str(top5_score[i])
-        string_surface = font.render(string, True, white)
-        screen.blit(string_surface, (0,0))
-    for i in range(len(top5_score)):
-        white = (255,255,255)
         str_i = str(i+1)
         str_nama = str(top5_score[i][0])
-        str_score = str(top5_score[i][1])
+        str_score = ""
+        temp = str(top5_score[i][1])
+        angka = ["0","1","2","3","4","5","6","7","8","9"]
+        for j in temp:
+            if j in angka:
+                str_score += j
         counter_surface = font.render(str_i, True, white)
         nama_surface = font.render(str_nama, True, white)
         score_surface = font.render(str_score, True, white)
@@ -371,9 +373,12 @@ def draw_highscore():
             screen.blit(nama_surface, (415,355))
             screen.blit(score_surface, (415,375))
         elif i == 3:
-            screen.blit(counter_surface, (290,410))
-            screen.blit(nama_surface, (280,430))
-            screen.blit(score_surface, (280,450))
+            counter_surface = pygame.transform.rotate(counter_surface, 30)
+            nama_surface = pygame.transform.rotate(nama_surface, 30)
+            score_surface = pygame.transform.rotate(score_surface, 30)
+            screen.blit(counter_surface, (270,415))
+            screen.blit(nama_surface, (275,428))
+            screen.blit(score_surface, (290,455))
         elif i == 4:
             screen.blit(counter_surface, (590,400))
             screen.blit(nama_surface, (580,420))
@@ -726,6 +731,16 @@ while run:
             else: no_hover = False
     elif highscore:
         draw_highscore()
+        if event.type == pygame.MOUSEMOTION:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        if mouse_x > 740 and mouse_x < 820 and mouse_y < 80 and mouse_y > 10:
+            hover_back = True
+            click = pygame.mouse.get_pressed()
+            if click[0]:
+                menu = True
+                highscore = False
+        else : hover_back = False
 
     elif tutorial:
         
@@ -747,9 +762,6 @@ while run:
             currenttutorial = 0
             start_ticks=time.time()
             play = True
-    
-    elif highscore:
-        pass
 
     elif play:
         if not change:
