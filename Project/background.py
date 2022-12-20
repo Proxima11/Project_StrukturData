@@ -3,6 +3,8 @@ from StrukturData import Cave
 from questions import question
 import time
 import queue as q
+import os
+
 
 
 pygame.init()
@@ -11,6 +13,20 @@ pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 clock = pygame.time.Clock()
 FPS = 60
+
+
+score = 0
+
+#HIGHSCORE FILE
+if os.path.exists('score.txt'):
+    with open('score.txt', 'r') as file:
+        high_score = int(file.read())
+else:
+    high_score =0
+
+fonts = pygame.font.SysFont('Chewy', 50)
+fontHI = pygame.font.SysFont('calibri', 50, True,)
+
 
 SCREEN_WIDTH = 840
 SCREEN_HEIGHT = 560
@@ -42,8 +58,10 @@ menu = True
 hover_play = False
 hover_highscore = False
 hover_exit = False
+hover_back = False
 
 # game variables
+highscore = False
 play = False
 paused = False
 gameover = False
@@ -77,6 +95,11 @@ menu_highscore = pygame.image.load("menuhighscore.png").convert_alpha()
 menu_exit = pygame.image.load("menuexit.png").convert_alpha()
 game_title = pygame.image.load("gametitle.png").convert_alpha()
 menu_potato = pygame.image.load("menupotato.png").convert_alpha()
+highscore_page = pygame.image.load("highscorepage.png").convert_alpha()
+highscore_back =  pygame.image.load("backbutton.png").convert_alpha()
+
+#GAMEOVER PAGE NANTI DI GANTI UINYA
+game_over_page = pygame.image.load("GAMEOVER_SCORE.png").convert_alpha()
 
 # game images
 main_room_double = pygame.image.load("main room double.png").convert_alpha()
@@ -125,6 +148,17 @@ potato_x = 350
 potato_y = 450
 mouse_x = 0
 mouse_y = 0
+
+def draw_text(text,font,text_col,x,y):
+    img = font.render(text,True,text_col)
+    screen.blit(img, (x,y))
+
+def draw_panel():
+    draw_text('SCORE: ' + str(score),fonts,(225,255,255),0,0)
+
+def draw_high():
+    draw_text(str(high_score),fontHI,(255,255,255),355,270)
+
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -365,6 +399,7 @@ def draw_answer4():
             temp_y = temp_y + 24
 
 def draw_question(start_ticks):
+    global score
     screen.blit(questionbg,(0,0))
     screen.blit(choice1,(0,0))
     screen.blit(choice2,(0,0))
@@ -383,6 +418,8 @@ def draw_question(start_ticks):
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[0]):
                 start_ticks -= 5
+            else:
+                score+=100
             currentroom.locked = False
     #235
     if mouse_x > 415 and mouse_x < 750 and mouse_y > 255 and mouse_y < 390:
@@ -391,6 +428,8 @@ def draw_question(start_ticks):
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[1]):
                 start_ticks -= 5
+            else:
+                score+=100
             currentroom.locked = False
     #135
     if mouse_x > 115 and mouse_x < 350 and mouse_y > 415 and mouse_y < 550:
@@ -399,6 +438,8 @@ def draw_question(start_ticks):
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[2]):
                 start_ticks -= 5
+            else:
+                score+=100
             currentroom.locked = False
     
     if mouse_x > 415 and mouse_x < 750 and mouse_y > 415 and mouse_y < 550:
@@ -407,6 +448,8 @@ def draw_question(start_ticks):
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[3]):
                 start_ticks -= 5
+            else:
+                score+=100
             currentroom.locked = False
     return start_ticks
 
@@ -428,6 +471,16 @@ def draw_gameover(start_ticks):
     if cave.isAllAnswered():
         if key_gameover[pygame.K_SPACE]:
             return True
+
+def draw_highscore():
+    screen.blit(menu_bg, (0,0))
+    draw_high()
+    screen.blit(highscore_page, (100,100))
+
+def game_over():
+    screen.blit(menu_bg, (0,0))
+    screen.blit(game_over_page, (100,100))
+
 
 run = True
 
@@ -457,7 +510,11 @@ while run:
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
             hover_highscore = True
             click = pygame.mouse.get_pressed()
-            if click[0]: pass
+            if click[0]:
+                highscore = True
+                if highscore:
+                    draw_highscore()
+                    menu = False
         else : hover_highscore = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450:
@@ -649,6 +706,19 @@ while run:
                 if getpower[pygame.K_e]:
                     getpowerup()
                     
+        
+        draw_panel()
+        if start_ticks < 0:
+            game_over()
+            if score > high_score:
+                high_score = score
+                with open('score.txt', 'w') as file:
+                    file.write(str(high_score))
+        
+        if cave.isAllAnswered():
+            pass
+
+             
     elif questionpage:
         seconds=int((start_ticks+30)-time.time())
         draw_seconds()
@@ -673,6 +743,8 @@ while run:
             gameover = False
             menu= True
     
+
+
 
     pygame.display.update()
 pygame.quit()
