@@ -117,7 +117,7 @@ game_title = pygame.image.load("gametitle.png").convert_alpha()
 menu_potato = pygame.image.load("menupotato.png").convert_alpha()
 highscore_page = pygame.image.load("highscorepage.png").convert_alpha()
 highscore_back =  pygame.image.load("backbutton.png").convert_alpha()
-game_over_page = pygame.image.load("highscoretitle.png").convert_alpha()
+highscore_title = pygame.image.load("highscoretitle.png").convert_alpha()
 game_pause = pygame.image.load("cave bg.jpg").convert_alpha()
 
 #tutorial images
@@ -303,14 +303,16 @@ def draw_treasure():
         screen.blit(treasure, (0,0))
 
 def draw_highscore():
-    screen.blit(game_over_page, (0,0))
-    draw_high()
-    screen.blit(highscore_back,(0,400))
-    screen.blit(highscore_page, (100,100))
+    screen.blit(highscore_page, (0,0))
+    screen.blit(highscore_title, (0,0))
+    screen.blit(highscore_back, (0,0))
+    #draw_high()
+    #screen.blit(highscore_back,(0,400))
+    
 
 def game_over():
     screen.blit(highscore_page, (0,0))
-    screen.blit(game_over_page, (100,100))
+    screen.blit(highscore_title, (0,0))
 
 
 def draw_powerup():
@@ -617,11 +619,7 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]:
                 highscore = True
-                if highscore:
-                    # draw_highscore()
-                    tutorialask = False
-                    menu = False
-                    highscores()
+                menu = False
         else : hover_highscore = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 380 and mouse_y < 450 and not tutorialask:
@@ -651,6 +649,8 @@ while run:
                     start_ticks=time.time()
                     play = True
             else: no_hover = False
+    elif highscore:
+        draw_highscore()
 
     elif tutorial:
         
