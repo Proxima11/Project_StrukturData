@@ -153,9 +153,10 @@ class Cave:
                 queue.append(current.right)
 
     def addPowerUp(self):
-
+        # print('index room power up: ')
         current = self.root
         self.__addpowerup(current)
+        print()
 
     def __addpowerup(self, current):
         if current is None:
@@ -163,44 +164,79 @@ class Cave:
 
         random1 = random.randint(1,4)
         random2 = random.randint(1,4)
-
+        # print(random1," ", random2)
         if random1 == random2:
             if current != self.root and current.treasure is False:
                 current.powerUp = True
                 randompower = random.randint(1,4)
                 current.powerUptype = randompower
+                print(current.index, end=' ')
         
         self.__addpowerup(current.left)
         self.__addpowerup(current.right)
 
-    def poweruproot(self, current) -> bool:
-        return self.__checkroot(current)
+    def poweruproot(self, current):
+        queue = []
+        queue.append(current)
+        while len(queue) !=0:
+            current = queue.pop(0)
 
-    def __checkroot(self, current):
-        if current is None:
-            return
+            if current.treasure:
+                return True
 
-        if current.treasure is True:
-            return True
-        
-        self.__checkroot(current.left)
-        self.__checkroot(current.right)
+            # Enqueue left child
+            if current.left is not None:
+                queue.append(current.left)
+    
+            # Enqueue right child
+            if current.right is not None:
+                queue.append(current.right)
         return False
+        # return self.__checkroot(current)
+
+    # def __checkroot(self, current):
+    #     if current is None:
+    #         return
+
+    #     if current.treasure is True:
+    #         return True
+        
+    #     self.__checkroot(current.left)
+    #     self.__checkroot(current.right)
+    #     return False
 
     def poweruplevel(self) -> int:
-        current = self.root
-        return self.__searchlevel(current)
+        # current = self.root
+        # return self.__searchlevel(current)
+        queue = []
+        queue.append(self.root)
+        print('room  :  ')
+        while len(queue) !=0:
+            current = queue.pop(0)
 
-    def __searchlevel(self, current):
-        if current is None:
-            return
+            if current.treasure:
+                return current.level
 
-        if current.treasure is True:
-            return current.level
+            # Enqueue left child
+            if current.left is not None:
+                queue.append(current.left)
+    
+            # Enqueue right child
+            if current.right is not None:
+                queue.append(current.right)
+        return -1
+
+    # def __searchlevel(self, current):
+    #     if current is None:
+    #         return
+
+    #     if current.treasure is True:
+    #         return current.level
         
-        self.__searchlevel(current.left)
-        self.__searchlevel(current.right)
-        return 0
+    #     self.__searchlevel(current.left)
+    #     self.__searchlevel(current.right)
+    #     if
+    #     return 0
 
     def poweruphint(self):
         pass

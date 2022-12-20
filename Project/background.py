@@ -51,7 +51,7 @@ active = False
 
 #Struktur data
 cave = Cave()
-for i in range(40):
+for i in range(52):
     cave.addRoomCave(i+1)
 currentroom = cave.root
 mainroom = cave.root
@@ -69,8 +69,8 @@ cave.addTreasure()
 cave.addPowerUp()
 # queue untuk power up nantinya
 queue = q.Queue()
-queue.put(0)
-queue.put(0)
+queue.put(3)
+queue.put(2)
 
 # menu variable 
 menu = True
@@ -860,7 +860,7 @@ while run:
                     delaypress = time.time() 
                     # redraw cave
                     cave = Cave()
-                    for i in range(40):
+                    for i in range(52):
                         cave.addRoomCave(i+1)
                     currentroom = cave.root
                     mainroom = cave.root
@@ -925,7 +925,7 @@ while run:
                     click = pygame.mouse.get_pressed()
                     if click[0] : 
                         cave = Cave()
-                        for i in range(40):
+                        for i in range(52):
                             cave.addRoomCave(i+1)
                         currentroom = cave.root
                         mainroom = cave.root
@@ -1184,7 +1184,7 @@ while run:
             
             # redraw cave
             cave = Cave()
-            for i in range(40):
+            for i in range(52):
                 cave.addRoomCave(i+1)
             currentroom = cave.root
             mainroom = cave.root
