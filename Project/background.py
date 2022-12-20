@@ -428,8 +428,9 @@ while run:
             click = pygame.mouse.get_pressed()
             if click[0]: 
                 menu = False
-                start_ticks=300
                 play = True
+                if play == True:
+                    start_ticks=300
         else : hover_play = False
 
         if mouse_x>500 and mouse_x<650 and mouse_y > 290 and mouse_y < 350:
