@@ -416,6 +416,7 @@ def draw_seconds():
     screen.blit(second_surface,(730,10))
 
 def draw_gameover():
+    screen.blit(menu_bg, (0,0))
     screen.blit(gameoverbg, (100,100))
 
 run = True
@@ -636,6 +637,9 @@ while run:
         seconds=int((start_ticks+30)-time.time())
         draw_seconds()
         if seconds<=0:
+            play=False
+            gameover = True
+        if cave.isAllAnswered():
             play=False
             gameover = True
 
