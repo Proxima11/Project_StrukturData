@@ -166,7 +166,6 @@ choice4 = pygame.image.load("choice4.png").convert_alpha()
 #gameover images
 gameoverbg = pygame.image.load("gameover_score.png").convert_alpha()
 
-
 def draw_text(text,font,text_col,x,y):
     img = font.render(text,True,text_col)
     screen.blit(img, (x,y))
@@ -176,7 +175,6 @@ def draw_panel():
 
 def draw_high():
     draw_text(str(high_score),fontHI,(255,255,255),355,270)
-
 
 def draw_menu():
     screen.blit(menu_bg, (0,0))
@@ -800,8 +798,72 @@ while run:
             with open('score.txt', 'w') as file:
                 file.write(str(high_score))
         if backtomenu[pygame.K_SPACE]:
+            #Struktur data
+            cave = Cave()
+            for i in range(8):
+                cave.addRoomCave(i+1)
+            currentroom = cave.root
+            mainroom = cave.root
+
+            #tambah pertanyaan ke tiap ruangan
+            cave.addQuestion()
+            cave.printRoom()
+
+            #tambah powerup
+            cave.addPowerUp()
+            # queue untuk power up nantinya
+            queue = q.Queue()
+            queue.put(0)
+            queue.put(0)
+
+            # menu variable 
+            menu = True
+            hover_play = False
+            hover_highscore = False
+            hover_exit = False
+            hover_back = False
+            tutorialask = False
+
+            # tutorial variable
+            tutorial = False
+            yes_hover = False
+            no_hover = False
+            currenttutorial = 0
+            delay = 0.1
+            last = 0
+
+            # game variables
+            highscore = False
+            play = False
+            paused = False
             gameover = False
-            menu= True
+            locked = currentroom.locked
+            right = True
+            question_notif = False
+            loading = False
+            door1 = False
+            door2 = False
+            door3 = False
+            change = False
+            start_ticks=0
+            startpause = 0
+            powerupdelay = 0
+            seconds = 0
+            isdelay = False
+            leftdoor = False
+            rightdoor = False
+            questionpage = False
+            questionstart = 0
+            drawtime = 0
+            poweruppopout = ""
+            powerupoutput = ""
+            addtime = False
+
+            # movement
+            potato_x = 350
+            potato_y = 450
+            mouse_x = 0
+            mouse_y = 0
 
 
     pygame.display.update()
