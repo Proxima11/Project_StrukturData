@@ -449,8 +449,9 @@ def draw_question(start_ticks):
     screen.blit(questionbg,(0,0))
     screen.blit(choice1,(0,0))
     screen.blit(choice2,(0,0))
-    screen.blit(choice3,(0,0))
-    screen.blit(choice4,(0,0))
+    if len(currentroom.Question.answer) > 2:
+        screen.blit(choice3,(0,0))
+        screen.blit(choice4,(0,0))
     draw_seconds()
     draw_question_()
     draw_answer1()
@@ -483,7 +484,7 @@ def draw_question(start_ticks):
                 score+=100
             currentroom.locked = False
     #135
-    if mouse_x > 115 and mouse_x < 350 and mouse_y > 415 and mouse_y < 550:
+    if mouse_x > 115 and mouse_x < 350 and mouse_y > 415 and mouse_y < 550 and len(currentroom.Question.answer) > 2:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
@@ -493,7 +494,7 @@ def draw_question(start_ticks):
                 score+=100
             currentroom.locked = False
     
-    if mouse_x > 415 and mouse_x < 750 and mouse_y > 415 and mouse_y < 550:
+    if mouse_x > 415 and mouse_x < 750 and mouse_y > 415 and mouse_y < 550 and len(currentroom.Question.answer) > 2:
         click = pygame.mouse.get_pressed()
         if click[0]:
             currentroom.Question.isAnswered = True
