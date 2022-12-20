@@ -6,7 +6,9 @@ import queue as q
 
 
 pygame.init()
+pygame.font.init()
 
+my_font = pygame.font.SysFont('Comic Sans MS', 30)
 clock = pygame.time.Clock()
 FPS = 60
 
@@ -31,11 +33,9 @@ cave.printRoom()
 #tambah powerup
 cave.addPowerUp()
 # queue untuk power up nantinya
-# queue = q.SimpleQueue()
-# queue.put(0)
-# queue.put(0)
-
-queue = [1,3]
+queue = q.Queue()
+queue.put(0)
+queue.put(0)
 
 # menu variable 
 menu = True
@@ -60,6 +60,9 @@ isdelay = False
 leftdoor = False
 rightdoor = False
 questionpage = False
+drawtime = 0
+poweruppopout = ""
+test = 0
 
 # menu images
 menu_bg = pygame.image.load("menubg.png").convert_alpha()
@@ -175,10 +178,8 @@ def draw_powerup():
             screen.blit(powerUphint, (0, 0))
 
 def draw_held_powerup():
-    # powerup1 = queue.get()
-    # powerup2 = queue.get()
-    powerup1 = queue[0]
-    powerup2 = queue[1]
+    powerup1 = queue.queue[0]
+    powerup2 = queue.queue[1]
 
     if powerup1 == 0:
         screen.blit(powerup1empty, (0, 0))
@@ -202,40 +203,53 @@ def draw_held_powerup():
     elif powerup2 == 4:
         screen.blit(powerup2hint, (0, 0))
 
-    # queue.put(powerup1)
-    # queue.put(powerup2)
-
-def usePowerUp():
-    use = queue.pop(0)
+def usePowerUp() -> str:
+    use = queue.queue[0]
+    notification = "a"
+    
     if use == 0:
-        print("no powerup")
-        pass
+        notification = "tidak ada power up"
     elif use == 1:
+        poweruppopout = ""
         pass
     elif use == 2:
         found = cave.poweruproot(currentroom)
+        print(found)
         if found:
             pass
         else :
             pass
     elif use == 3:
         level = cave.poweruplevel()
-        pass
+        print(level)
     elif use == 4:
         pass
-    queue.append(0)
+    if use != 0:
+        queue.put(0)
+        queue.get()
+
+    return notification
     
 # buat ngambil powerupnya pencet E
 def getpowerup():
-    if queue[0]==0 and queue[1]==0:
-        queue[0]=currentroom.powerUptype
-    elif queue[1]==0:
-        queue[1]=currentroom.powerUptype
-    else:
-        queue.pop(0)
-        queue.append(currentroom.powerUptype)
+    queue1 = queue.get()
+    queue2 = queue.get()
+
+    if queue1 != 0: queue.put(queue1)
+    if queue2 != 0: queue.put(queue2)
+    queue.put(currentroom.powerUptype)
+
+    if queue.qsize() > 2: queue.get()
+    elif queue.qsize() == 1 : queue.put(0)
+
     currentroom.powerUp=False
     currentroom.powerUptype=0
+    
+def drawpowerupresult():
+    pass
+
+def powerupcooldown():
+    pass
 
 def draw_question_():
     if currentroom.Question is not None and not currentroom.Question.isAnswered:
@@ -421,7 +435,6 @@ while run:
     elif play:
         if not change:
 
-
             # menentukan bentuk ruangan
             if currentroom.left != None:
                 leftdoor = True
@@ -432,6 +445,17 @@ while run:
 
             # status locked
             locked = currentroom.locked
+
+            # power up
+            usePU = pygame.key.get_pressed()
+            if usePU[pygame.K_p] and powerupdelay+3<time.time(): 
+            #di kasih delay biar gak kepake e cuma 1 dalam 3 detik
+                powerupdelay = time.time()
+                drawtime = 3000
+                powerupoutput = usePowerUp()
+                print(powerupoutput)
+                print(test)
+            else : powerupcooldown()
 
             #gambar ruangan
             draw_room()
@@ -449,11 +473,13 @@ while run:
             # gambar help powerup
             draw_held_powerup()
 
-            usePU = pygame.key.get_pressed()
-            if usePU[pygame.K_p] and powerupdelay+3<time.time(): #di kasih delay biar gak kepake e cuma 1 dalam 3 detik
-                powerupdelay = time.time()
-                usePowerUp()
-                
+            if drawtime > 0:
+                passed = clock.tick(60)
+                drawtime -= passed
+                if drawtime < 0: drawtime = 0
+                text = my_font.render(powerupoutput, False, (0,0,0))
+                screen.blit(text, (SCREEN_WIDTH/2,50))
+
 
             move = pygame.key.get_pressed()
             if potato_y >= 450 and currentroom != mainroom:
@@ -513,6 +539,9 @@ while run:
                     #currentroom.locked = False
             else : question_notif = False
 
+            # take powerup
+
+
         else:
             # 3 detik black screen pas mau ganti room
             if (startpause+3)<time.time():
@@ -557,11 +586,13 @@ while run:
             change = True
             currentroom = currentroom.previous
         
-        if currentroom.powerUp==True:       #ngambil power up
+        #ngambil power up
+        if currentroom.powerUp==True: 
             if potato_x>330 and potato_x<470 and potato_y<300 and potato_y>160:
                 getpower = pygame.key.get_pressed()
                 if getpower[pygame.K_e]:
                     getpowerup()
+
                     
     elif questionpage:
         exit = pygame.key.get_pressed()
@@ -576,5 +607,4 @@ while run:
             currentroom.locked = False
 
     pygame.display.update()
-
 pygame.quit()

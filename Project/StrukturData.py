@@ -194,7 +194,7 @@ class Cave:
         return self.__checkroot(current)
 
     def __checkroot(self, current):
-        if current.right is None and current.left is None:
+        if current is None:
             return
 
         if current.treasure is True:
@@ -209,7 +209,7 @@ class Cave:
         return self.__searchlevel(current)
 
     def __searchlevel(self, current):
-        if current.right is None and current.left is None:
+        if current is None:
             return
 
         if current.treasure is True:
