@@ -83,6 +83,7 @@ change = False
 start_ticks=0
 startpause = 0
 powerupdelay = 0
+escapedelay = 0
 seconds = 30000
 isdelay = False
 leftdoor = False
@@ -471,7 +472,7 @@ def draw_question(start_ticks):
     draw_answer2()
     draw_answer3()
     draw_answer4()
-    seconds=int((start_ticks+30)-time.time())
+    start_ticks -= cclock
     if seconds<=0:
         return -9999
     if cave.isAllAnswered():
@@ -482,7 +483,7 @@ def draw_question(start_ticks):
         if click[0]:
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[0]):
-                start_ticks -= 5
+                start_ticks -= 5000
             else:
                 score+=100
             currentroom.locked = False
@@ -492,7 +493,7 @@ def draw_question(start_ticks):
         if click[0]:
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[1]):
-                start_ticks -= 5
+                start_ticks -= 5000
             else:
                 score+=100
             currentroom.locked = False
@@ -502,7 +503,7 @@ def draw_question(start_ticks):
         if click[0]:
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[2]):
-                start_ticks -= 5
+                start_ticks -= 5000
             else:
                 score+=100
             currentroom.locked = False
@@ -512,7 +513,7 @@ def draw_question(start_ticks):
         if click[0]:
             currentroom.Question.isAnswered = True
             if not currentroom.Question.isCorrect(currentroom.Question.answer[3]):
-                start_ticks -= 5
+                start_ticks -= 5000
             else:
                 score+=100
             currentroom.locked = False        
@@ -689,10 +690,10 @@ while run:
                 if drawtime < 0: drawtime = 0
                 text = my_font.render(powerupoutput, False, (255,255,255))
                 text_x, text_y = text.get_size()
-                screen.blit(text, ((SCREEN_WIDTH - text_x) / 2 , 20))
+                screen.blit(text, ((SCREEN_WIDTH - text_x) / 2 , 200))
 
             pausegame = pygame.key.get_pressed()
-            if pausegame[pygame.K_ESCAPE] : paused = True
+            if pausegame[pygame.K_ESCAPE] and escapedelay+3<time.time(): paused = True
             
             if paused:
                 draw_paused()
@@ -857,7 +858,8 @@ while run:
             gameover = True
 
         questiontime = int(time.time()-questionstart)
-        if exit[pygame.K_ESCAPE]:
+        if exit[pygame.K_ESCAPE] and escapedelay+3<time.time():
+            escapedelay = time.time()
             questionpage = False
             play = True
         elif exit[pygame.K_n] or currentroom.Question.isAnswered:
