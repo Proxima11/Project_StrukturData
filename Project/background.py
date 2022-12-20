@@ -325,6 +325,56 @@ def draw_highscore():
     screen.blit(highscore_page, (0,0))
     screen.blit(highscore_title, (0,0))
     screen.blit(highscore_back, (0,0))
+<<<<<<< HEAD
+    counter = 0
+    top5_score = []
+    with open('score.txt') as file_score:
+        while True:
+            counter+=1
+            line = file_score.readline()
+            if not line:
+                break
+            elif counter <= 5:
+                collect_score = line.split(';')
+                top5_score.append(collect_score)
+            else:
+                break
+    font = pygame.font.SysFont('freesansbold.ttf',26)
+    for i in range(len(top5_score)):
+        white = (255,255,255)
+        string = str(top5_score[i])
+        string_surface = font.render(string, True, white)
+        screen.blit(string_surface, (0,0))
+    for i in range(len(top5_score)):
+        white = (255,255,255)
+        str_i = str(i+1)
+        str_nama = str(top5_score[i][0])
+        str_score = str(top5_score[i][1])
+        counter_surface = font.render(str_i, True, white)
+        nama_surface = font.render(str_nama, True, white)
+        score_surface = font.render(str_score, True, white)
+        if i == 0:
+            screen.blit(counter_surface, (270,260))
+            screen.blit(nama_surface, (265,280))
+            screen.blit(score_surface, (265,300))
+        elif i == 1:
+            screen.blit(counter_surface, (575,255))
+            screen.blit(nama_surface, (565,275))
+            screen.blit(score_surface, (565,295))
+        elif i == 2:
+            screen.blit(counter_surface, (425,335))
+            screen.blit(nama_surface, (415,355))
+            screen.blit(score_surface, (415,375))
+        elif i == 3:
+            screen.blit(counter_surface, (290,410))
+            screen.blit(nama_surface, (280,430))
+            screen.blit(score_surface, (280,450))
+        elif i == 4:
+            screen.blit(counter_surface, (590,400))
+            screen.blit(nama_surface, (580,420))
+            screen.blit(score_surface, (580,440))
+=======
+>>>>>>> a839654bf39ec1784013dc54e7b5e3080357287e
     #draw_high()
     #screen.blit(highscore_back,(0,400))
     
