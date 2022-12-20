@@ -69,8 +69,8 @@ cave.addTreasure()
 cave.addPowerUp()
 # queue untuk power up nantinya
 queue = q.Queue()
-queue.put(3)
-queue.put(2)
+queue.put(0)
+queue.put(0)
 
 # menu variable 
 menu = True
