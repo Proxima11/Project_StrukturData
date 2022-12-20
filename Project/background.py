@@ -891,6 +891,7 @@ while run:
             poweruppopout = ""
             powerupoutput = ""
             addtime = False
+            score = 0
 
             # movement
             potato_x = 350

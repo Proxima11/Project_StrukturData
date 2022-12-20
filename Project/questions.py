@@ -51,11 +51,11 @@ class question:
         self.add_question("Kumpulan dari simpul dan busur disebut", "graph", "stack", "queue", "linked list")#3
         self.add_question("Jika sebuah undirected graph memiliki edge sebagai / berikut: (A,B), (B,C), (C,A), (D,E), (B,D) apakah graph / tersebut membentuk cycle graph?", "ya", "tidak", "", "")#4
         self.add_question("Istilah dalam graph jika ada sebuah edge yang ditulis / e = (v,w) dan w terletak pada e maka hal tersebut disebut", "incident", "outdegree", "degree", "adjacent")#5
-        self.add_question("Pada graph tak berarah, dua simpul disebut adjacent / ketika", "ada busur yang menghubungkan / kedua simpul", "ada simpul yang menghubungkan / kedua simpul", "tidak ada busur yang / menghubungkan kedua simpul", "ada busur dan simpul / yang menghubungkan kedua / simpul")#6
+        self.add_question("Pada graph tak berarah, dua simpul disebut adjacent / ketika", "ada busur yang / menghubungkan kedua / simpul", "ada simpul yang menghubungkan/kedua simpul", "tidak ada busur yang/menghubungkan kedua/ simpul", "ada busur dan simpul / yang menghubungkan / kedua simpul")#6
         self.add_question("Beberapa algoritma yang dapat mencari shortest path / sebuah graph, kecuali", "max-sum", "warshall's algorithm", "MST", "djikstra algorithm")#7
         self.add_question("Penelusuran graph dengan mendahulukan arah kedalaman / disebut dengan", "DFS", "BFS", "Greedy", "Dynamic Programming")#8
         self.add_question("Dalam Single Linked List, ada tambahan data di dalam / node yang berfungsi untuk menyambungkan suatu node / dengan node lainnya agar tidak putus disebut", "pointer", "line", "number", "null")#9
-        self.add_question("Kelebihan linked list daripada array adalah", "ukuran dinamis", "mudah dimengerti", "bisa mengakses index langsung", "code sederhana")#10
+        self.add_question("Kelebihan linked list daripada array adalah", "ukuran dinamis", "mudah dimengerti", "bisa mengakses index / langsung", "code sederhana")#10
         self.add_question("Fungsi atau prosedur yang dapat digunakan dalam sebuah / program disebut", "primitif", "abstrak", "kompleks", "variabel")#11
         self.add_question("Berikut adalah contoh tipe data sederhana tunggal, kecuali", "string", "integer", "boolean", "char")#12
         self.add_question("Ketika ada sebuah data set 3, 2, 1 dan dimasukkan ke / dalam stack secara berurutan namun menghasilkan hasil / ascending, berapakah jumlah dari stack melakukan fungsi push?", "6", "3", "2", "8")#13
