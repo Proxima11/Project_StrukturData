@@ -860,7 +860,7 @@ while run:
                     delaypress = time.time() 
                     # redraw cave
                     cave = Cave()
-                    for i in range(8):
+                    for i in range(40):
                         cave.addRoomCave(i+1)
                     currentroom = cave.root
                     mainroom = cave.root
@@ -925,7 +925,7 @@ while run:
                     click = pygame.mouse.get_pressed()
                     if click[0] : 
                         cave = Cave()
-                        for i in range(8):
+                        for i in range(40):
                             cave.addRoomCave(i+1)
                         currentroom = cave.root
                         mainroom = cave.root
@@ -1184,7 +1184,7 @@ while run:
             
             # redraw cave
             cave = Cave()
-            for i in range(8):
+            for i in range(40):
                 cave.addRoomCave(i+1)
             currentroom = cave.root
             mainroom = cave.root
