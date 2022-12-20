@@ -794,6 +794,9 @@ while run:
         if currentroom.powerUp==True: 
             if potato_x>330 and potato_x<470 and potato_y<300 and potato_y>160:
                 getpower = pygame.key.get_pressed()
+                font_notif = pygame.font.SysFont('freesansbold.ttf',32)
+                notif_surface = font_notif.render('Press E to take the power up', True, (255,255,255), (0,0,0))
+                screen.blit(notif_surface, (SCREEN_WIDTH // 2-120 , 220))
                 if getpower[pygame.K_e]:
                     getpowerup()
         
