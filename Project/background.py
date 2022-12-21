@@ -338,15 +338,20 @@ def draw_highscore():
     top5_score = []
     with open('score.txt') as file_score:
         while True:
-            counter+=1
             line = file_score.readline()
             if not line:
                 break
-            elif counter <= 5:
-                collect_score = line.split(';')
-                top5_score.append(collect_score)
-            else:
-                break
+            elif line == "\n":
+                continue
+            elif line == "":
+                continue
+            else :
+                counter+=1
+                if counter <= 5:
+                    collect_score = line.split(';')
+                    top5_score.append(collect_score)
+                else:
+                    break
     font = pygame.font.SysFont('freesansbold.ttf',26)
     for i in range(len(top5_score)):
         white = (255,255,255)
@@ -1173,18 +1178,54 @@ while run:
         pygame.display.flip()
     elif gameover:
         if datascoreBOL:
-            with open('datascore.txt', 'a') as file:
-                if  os.path.getsize('datascore.txt') == 0:
-                    file.write(str(score))
-                else:
-                    file.write("\n" + str(score))
+            f = open("score.txt", "a")
+            strings = username + ";" + str(score)
+            f.write(strings+"\n")
+            f.close()
+            all_scores = []
+            with open('score.txt') as file_scoreX:
+                while True:
+                    lines = file_scoreX.readline()
+                    if not lines:
+                        break
+                    elif lines == "\n":
+                        continue
+                    elif lines == "":
+                        continue
+                    else:
+                        collect_scoreS = lines.split(';')
+                        all_scores.append(collect_scoreS)
+    
+            #
+            swapped = False
+            n = len(all_scores)
+            angka = ["1","2","3","4","5","6","7","8","9","0"]
+            for i in range(n-1):
+                for j in range(0, n-i-1):
+                    temp1 = all_scores[j][1]
+                    temp2 = all_scores[j+1][1]
+                    str1 = ""
+                    str2 = ""
+                    for chrs in temp1:
+                        if chrs in angka:
+                            str1+=chrs
+                    for chrs in temp2:
+                        if chrs in angka:
+                            str2+=chrs
+                    if int(str1) < int(str2):
+                        swapped = True
+                        all_scores[j], all_scores[j + 1] = all_scores[j + 1], all_scores[j]
+                if not swapped:
+                    break
+                    
+                
+            fo = open("score.txt", "w")
+            fo.truncate()
+            for k in range(len(all_scores)):
+                stringss = str(all_scores[k][0]+";"+str(all_scores[k][1])+"\n")
+                fo.write(stringss)
+            fo.close()
             
-            with open('datascore.txt', 'r') as file:
-                sorted_data=sorted(file.readlines(),key=lambda item: int(item.rsplit('=', 0)[-1].strip()), reverse=True)
-
-            file1 = open('datascore.txt', 'w')
-            file1.writelines(sorted_data)
-            file1.close()
             datascoreBOL = False
 
         print(username)
